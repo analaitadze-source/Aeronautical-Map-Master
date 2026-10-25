@@ -1,0 +1,3177 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICAO Aeronautical Chart Symbols - 150 Flashcards</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cockpit: {
+                            bg: '#0B0F19',
+                            card: '#111827',
+                            border: '#1F293D',
+                            accent: '#06B6D4',
+                            magenta: '#EC4899',
+                            amber: '#F59E0B',
+                            green: '#10B981',
+                            red: '#EF4444'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f293d;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+
+        /* 3D Flip Card Effect */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(6, 182, 212, 0.15);
+        }
+
+        /* Aeronautical Grid Background */
+        .aero-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        /* Custom Radar Sweep Animation */
+        @keyframes sweep {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .radar-sweep {
+            animation: sweep 8s linear infinite;
+        }
+
+        /* Pulse Indicator */
+        @keyframes pulse-cyan {
+            0%, 100% { opacity: 0.3; transform: scale(0.98); }
+            50% { opacity: 0.8; transform: scale(1.02); }
+        }
+        .glow-pulse {
+            animation: pulse-cyan 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-cockpit-bg text-slate-100 font-sans min-h-screen aero-grid flex flex-col selection:bg-cockpit-accent selection:text-black">
+
+    <!-- TOP NAV / HEADER -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <!-- App Title & Logo -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-slate-950 font-bold shadow-lg shadow-cyan-500/20">
+                    <i class="fa-solid fa-plane-departure text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight tracking-wide flex items-center gap-2">
+                        <span>ICAO ANNEX 4</span>
+                        <span class="text-xs bg-cyan-950 text-cyan-400 border border-cyan-800/50 px-2 py-0.5 rounded font-mono">150 SYMBOLS</span>
+                    </h1>
+                    <p class="text-xs text-slate-400 font-mono">Interactive Aeronautical Map Master</p>
+                </div>
+            </div>
+
+            <!-- View Modes & Action Controls -->
+            <div class="flex items-center space-x-2 sm:space-x-3 text-sm">
+                <!-- Deck / Quiz Mode Toggle -->
+                <div class="bg-slate-900/90 p-1 rounded-lg border border-slate-800 flex">
+                    <button id="view-deck-btn" onclick="switchView('deck')" class="px-3 py-1.5 rounded-md font-medium flex items-center space-x-2 transition-all bg-cockpit-accent text-slate-950 shadow-sm">
+                        <i class="fa-solid fa-clone"></i>
+                        <span class="hidden sm:inline">Deck</span>
+                    </button>
+                    <button id="view-quiz-btn" onclick="switchView('quiz')" class="px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-slate-200 flex items-center space-x-2 transition-all">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span class="hidden sm:inline">Quiz Mode</span>
+                    </button>
+                </div>
+
+                <!-- Export / Share Button -->
+                <button onclick="openShareModal()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700/60 flex items-center space-x-2 transition-all" title="Share state or export data">
+                    <i class="fa-solid fa-share-nodes text-cyan-400"></i>
+                    <span class="hidden md:inline">Share</span>
+                </button>
+
+                <!-- Help Info Button -->
+                <button onclick="openHelpModal()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 border border-slate-700/60 transition-all">
+                    <i class="fa-solid fa-circle-question"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 flex flex-col gap-6">
+
+        <!-- DECK VIEW CONTAINER -->
+        <div id="deck-view" class="flex flex-col gap-6">
+
+            <!-- CONTROL BAR: Search, Filter & Metrics -->
+            <div class="glass-panel p-4 rounded-xl flex flex-col lg:flex-row gap-4 justify-between items-stretch lg:items-center">
+                <!-- Search Box -->
+                <div class="relative flex-1">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                    <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Search symbols, codes, rules (e.g. VOR, Class C, Obstacle, PAPI)..." class="w-full bg-slate-900/90 border border-slate-700/80 rounded-lg pl-10 pr-10 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all">
+                    <button id="clear-search" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Category Filters Dropdown & Filters -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <select id="category-filter" onchange="handleCategoryFilter(this.value)" class="bg-slate-900/90 border border-slate-700/80 rounded-lg px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500">
+                        <option value="ALL">All Categories (150)</option>
+                        <option value="airspace">Airspace & Boundaries</option>
+                        <option value="obstacle">Obstacles & Surface Hazards</option>
+                        <option value="navaid">Navigation Aids & Fixes</option>
+                        <option value="aerodrome">Aerodromes & Lighting</option>
+                        <option value="environment">Environmental & Special Zones</option>
+                        <option value="procedure">Flight Procedure & En-Route</option>
+                    </select>
+
+                    <select id="mastery-filter" onchange="handleMasteryFilter(this.value)" class="bg-slate-900/90 border border-slate-700/80 rounded-lg px-3 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500">
+                        <option value="ALL">All Cards</option>
+                        <option value="MASTERED">Mastered Only</option>
+                        <option value="REVIEW">Needs Review</option>
+                    </select>
+
+                    <button onclick="shuffleDeck()" class="px-3 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-white flex items-center space-x-2 transition-all" title="Shuffle Cards">
+                        <i class="fa-solid fa-shuffle text-cyan-400"></i>
+                        <span class="hidden sm:inline">Shuffle</span>
+                    </button>
+
+                    <button onclick="resetFilters()" class="p-2.5 bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 rounded-lg text-slate-400 hover:text-slate-200 transition-all" title="Reset Filters">
+                        <i class="fa-solid fa-rotate-left"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MASTERY PROGRESS BAR & HUD STATS -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs font-mono">
+                <div class="glass-panel p-3 rounded-lg border-l-4 border-l-cyan-500 flex justify-between items-center">
+                    <div>
+                        <div class="text-slate-400">DECK SIZE</div>
+                        <div id="stat-total" class="text-lg font-bold text-slate-100">150</div>
+                    </div>
+                    <i class="fa-solid fa-layer-group text-slate-600 text-xl"></i>
+                </div>
+                <div class="glass-panel p-3 rounded-lg border-l-4 border-l-emerald-500 flex justify-between items-center">
+                    <div>
+                        <div class="text-slate-400">MASTERED</div>
+                        <div id="stat-mastered" class="text-lg font-bold text-emerald-400">0</div>
+                    </div>
+                    <i class="fa-solid fa-circle-check text-emerald-600/50 text-xl"></i>
+                </div>
+                <div class="glass-panel p-3 rounded-lg border-l-4 border-l-amber-500 flex justify-between items-center">
+                    <div>
+                        <div class="text-slate-400">NEEDS REVIEW</div>
+                        <div id="stat-review" class="text-lg font-bold text-amber-400">150</div>
+                    </div>
+                    <i class="fa-solid fa-triangle-exclamation text-amber-600/50 text-xl"></i>
+                </div>
+                <div class="glass-panel p-3 rounded-lg border-l-4 border-l-purple-500 flex justify-between items-center">
+                    <div>
+                        <div class="text-slate-400">MASTERY RATE</div>
+                        <div id="stat-percentage" class="text-lg font-bold text-purple-400">0%</div>
+                    </div>
+                    <i class="fa-solid fa-chart-pie text-purple-600/50 text-xl"></i>
+                </div>
+            </div>
+
+            <!-- PROGRESS BAR -->
+            <div class="w-full bg-slate-900 rounded-full h-2 overflow-hidden border border-slate-800">
+                <div id="mastery-progress-bar" class="bg-gradient-to-r from-cyan-500 to-emerald-400 h-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+
+            <!-- CARD CAROUSEL / MAIN DISPLAY -->
+            <div class="flex flex-col items-center gap-6 my-2">
+                
+                <!-- FLASHCARD FLIP CONTAINER -->
+                <div class="w-full max-w-2xl h-[460px] md:h-[500px] perspective-1000 cursor-pointer group" onclick="flipCard()">
+                    <div id="flashcard" class="relative w-full h-full duration-500 transform-style-3d transition-transform shadow-2xl rounded-2xl">
+                        
+                        <!-- CARD FRONT -->
+                        <div class="absolute inset-0 w-full h-full glass-card rounded-2xl p-6 flex flex-col justify-between backface-hidden border border-cyan-500/30 group-hover:border-cyan-400/60 transition-colors">
+                            <!-- Card Header -->
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-center space-x-2">
+                                    <span id="card-front-category" class="text-xs uppercase font-mono tracking-wider bg-cyan-950/80 text-cyan-300 border border-cyan-800/60 px-2.5 py-1 rounded-full">
+                                        Airspace
+                                    </span>
+                                    <span id="card-front-code" class="text-xs font-mono text-slate-400">ICAO-A01</span>
+                                </div>
+                                <button id="mastery-badge" onclick="toggleMastery(event)" class="text-xs px-3 py-1 rounded-full border flex items-center space-x-1.5 transition-all">
+                                    <i id="mastery-icon" class="fa-regular fa-circle"></i>
+                                    <span id="mastery-text">Unmastered</span>
+                                </button>
+                            </div>
+
+                            <!-- Symbol SVG Render Area -->
+                            <div id="card-front-svg-container" class="my-auto flex flex-col items-center justify-center p-4 min-h-[220px]">
+                                <!-- Dynamic SVG inserted here -->
+                            </div>
+
+                            <!-- Card Front Footer / Hint -->
+                            <div class="flex justify-between items-center text-xs text-slate-400 pt-3 border-t border-slate-800">
+                                <span class="font-mono" id="card-index-indicator">Card 1 of 150</span>
+                                <span class="flex items-center text-cyan-400 font-medium">
+                                    <i class="fa-solid fa-rotate text-xs mr-1"></i> Flip for Details
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- CARD BACK -->
+                        <div class="absolute inset-0 w-full h-full glass-card rounded-2xl p-6 flex flex-col justify-between backface-hidden rotate-y-180 border border-purple-500/30 overflow-y-auto">
+                            <div class="flex justify-between items-start border-b border-slate-800 pb-3">
+                                <div>
+                                    <span id="card-back-category" class="text-[10px] uppercase font-mono tracking-wider bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Category</span>
+                                    <h2 id="card-back-title" class="text-xl font-bold text-white mt-1">Symbol Title</h2>
+                                </div>
+                                <span id="card-back-code" class="text-xs font-mono bg-cyan-950 text-cyan-400 px-2 py-1 rounded border border-cyan-800">ICAO</span>
+                            </div>
+
+                            <!-- Detailed Specifications -->
+                            <div class="space-y-3 my-3 text-sm flex-1">
+                                <div>
+                                    <h3 class="text-xs font-mono uppercase text-slate-400 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-book text-cyan-400"></i> ICAO Definition
+                                    </h3>
+                                    <p id="card-back-def" class="text-slate-200 text-xs sm:text-sm leading-relaxed">Detailed ICAO definition...</p>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <div class="bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
+                                        <h4 class="text-[11px] font-mono uppercase text-slate-400 mb-0.5 flex items-center gap-1">
+                                            <i class="fa-solid fa-arrows-up-down text-cyan-400"></i> Vertical Limits / Rules
+                                        </h4>
+                                        <p id="card-back-limits" class="text-xs text-slate-300 font-mono">GND - FL100</p>
+                                    </div>
+                                    <div class="bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
+                                        <h4 class="text-[11px] font-mono uppercase text-slate-400 mb-0.5 flex items-center gap-1">
+                                            <i class="fa-solid fa-map-pin text-cyan-400"></i> Chart Conventions
+                                        </h4>
+                                        <p id="card-back-convention" class="text-xs text-slate-300">Blue dashed border with crosshatching</p>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">
+                                    <h3 class="text-xs font-mono uppercase text-amber-400 mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-plane-arrival"></i> Pilot SOP & Action
+                                    </h3>
+                                    <p id="card-back-sop" class="text-xs text-slate-300 leading-normal">Standard operating procedure for flight crews...</p>
+                                </div>
+                            </div>
+
+                            <!-- Back Footer -->
+                            <div class="flex justify-between items-center text-xs text-slate-400 pt-2 border-t border-slate-800">
+                                <span class="font-mono">Press SPACE or Tap to flip back</span>
+                                <button onclick="toggleMastery(event)" class="text-xs text-emerald-400 hover:underline">Toggle Mastered</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- NAVIGATION CONTROLS -->
+                <div class="w-full max-w-2xl flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center space-x-2">
+                        <button onclick="prevCard()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-slate-200 flex items-center space-x-2 transition-all active:scale-95">
+                            <i class="fa-solid fa-chevron-left"></i>
+                            <span class="hidden sm:inline">Prev</span>
+                        </button>
+                        <button onclick="nextCard()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-slate-200 flex items-center space-x-2 transition-all active:scale-95">
+                            <span class="hidden sm:inline">Next</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Jump To Input -->
+                    <div class="flex items-center space-x-2 text-xs font-mono">
+                        <span class="text-slate-400">Jump:</span>
+                        <input type="number" id="jump-input" min="1" max="150" onchange="jumpToCardIndex(this.value)" class="w-16 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-center text-slate-100 focus:outline-none focus:border-cyan-500">
+                        <span id="jump-max" class="text-slate-500">/ 150</span>
+                    </div>
+
+                    <!-- Keyboard Shortcut Hint -->
+                    <div class="hidden lg:flex items-center space-x-2 text-[11px] font-mono text-slate-500">
+                        <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">Space</kbd> Flip
+                        <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">←/→</kbd> Nav
+                        <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300">M</kbd> Master
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUIZ VIEW CONTAINER (Hidden by default) -->
+        <div id="quiz-view" class="hidden flex-col gap-6 max-w-3xl mx-auto w-full">
+            <div class="glass-panel p-6 rounded-2xl flex flex-col gap-6">
+                
+                <!-- Quiz Header -->
+                <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-graduation-cap text-cyan-400"></i> ICAO Symbol Knowledge Quiz
+                        </h2>
+                        <p class="text-xs text-slate-400">Test your recognition of standard aeronautical chart symbols</p>
+                    </div>
+                    <div class="text-right font-mono">
+                        <div class="text-xs text-slate-400">Score</div>
+                        <div id="quiz-score" class="text-lg font-bold text-cyan-400">0 / 0</div>
+                    </div>
+                </div>
+
+                <!-- Quiz Card / Question Display -->
+                <div id="quiz-question-box" class="flex flex-col items-center space-y-6">
+                    <div class="w-full bg-slate-900/90 border border-slate-800 rounded-xl p-6 flex flex-col items-center justify-center min-h-[200px]">
+                        <span class="text-xs text-slate-500 font-mono mb-2">IDENTIFY THIS SYMBOL</span>
+                        <div id="quiz-svg-container" class="w-full flex justify-center py-2">
+                            <!-- SVG Question Target -->
+                        </div>
+                    </div>
+
+                    <!-- Options Grid -->
+                    <div id="quiz-options-grid" class="w-full grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <!-- Options auto-generated -->
+                    </div>
+
+                    <!-- Quiz Feedback Banner -->
+                    <div id="quiz-feedback" class="hidden w-full p-4 rounded-xl font-medium text-sm text-center">
+                        <!-- Feedback message -->
+                    </div>
+
+                    <!-- Quiz Control Buttons -->
+                    <div class="w-full flex justify-end">
+                        <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="hidden px-6 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition-all shadow-lg shadow-cyan-500/20 flex items-center gap-2">
+                            <span>Next Question</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+
+    <!-- SHARE & EXPORT MODAL -->
+    <div id="share-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-lg w-full p-6 rounded-2xl border border-cyan-500/30 flex flex-col gap-5">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-lg text-white flex items-center gap-2">
+                    <i class="fa-solid fa-share-nodes text-cyan-400"></i> Share & Export Options
+                </h3>
+                <button onclick="closeShareModal()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Share URL Link -->
+            <div class="space-y-2">
+                <label class="text-xs font-mono uppercase text-slate-400">Shareable URL Link (Current State)</label>
+                <div class="flex gap-2">
+                    <input type="text" id="share-url-input" readonly class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs font-mono text-cyan-300 focus:outline-none">
+                    <button onclick="copyShareUrl()" class="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs rounded-lg transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-copy"></i> Copy
+                    </button>
+                </div>
+                <p class="text-[11px] text-slate-500">This URL encodes your current active symbol, active category filter, and mastery progress.</p>
+            </div>
+
+            <hr class="border-slate-800">
+
+            <!-- Data Backup & Sync -->
+            <div class="space-y-3">
+                <label class="text-xs font-mono uppercase text-slate-400">Backup & Progress Sync (JSON)</label>
+                <div class="flex gap-2">
+                    <button onclick="exportUserData()" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-xs text-slate-200 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-download text-cyan-400"></i> Export Progress
+                    </button>
+                    <label class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-xs text-slate-200 flex items-center justify-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-upload text-emerald-400"></i> Import Progress
+                        <input type="file" id="import-file" onchange="importUserData(event)" class="hidden" accept=".json">
+                    </label>
+                </div>
+            </div>
+
+            <div class="pt-2 text-right">
+                <button onclick="closeShareModal()" class="px-4 py-2 bg-slate-800 text-xs text-slate-300 rounded-lg hover:bg-slate-700">Close</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- HELP / SOP MODAL -->
+    <div id="help-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-xl w-full p-6 rounded-2xl border border-slate-700 flex flex-col gap-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-lg text-white flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info text-cyan-400"></i> ICAO Chart Reference SOP Guide
+                </h3>
+                <button onclick="closeHelpModal()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="text-xs text-slate-300 space-y-3 leading-relaxed">
+                <p><strong class="text-cyan-400">About ICAO Annex 4:</strong> Annex 4 to the Convention on International Civil Aviation governs Aeronautical Charts used in worldwide civil aviation navigation. Standardized colors, lines, and shapes ensure cross-border flight safety.</p>
+
+                <h4 class="font-bold text-slate-100 font-mono uppercase text-[11px] pt-1">Keyboard Shortcuts:</h4>
+                <ul class="grid grid-cols-2 gap-2 font-mono text-[11px] bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+                    <li><span class="text-cyan-400">Space / Click</span> : Flip Card</li>
+                    <li><span class="text-cyan-400">← / → Arrow</span> : Prev / Next</li>
+                    <li><span class="text-cyan-400">Key 'M'</span> : Toggle Mastery</li>
+                    <li><span class="text-cyan-400">Key 'S'</span> : Shuffle Cards</li>
+                </ul>
+
+                <h4 class="font-bold text-slate-100 font-mono uppercase text-[11px] pt-1">Standard Color Conventions:</h4>
+                <div class="grid grid-cols-2 gap-2 text-[11px]">
+                    <div class="p-2 bg-slate-900 rounded border border-blue-900/40"><span class="text-blue-400 font-bold">Blue/Cyan:</span> Controlled airspaces, navaids, rivers, water.</div>
+                    <div class="p-2 bg-slate-900 rounded border border-magenta-900/40"><span class="text-pink-400 font-bold">Magenta:</span> Uncontrolled airspaces, special zones, hazards.</div>
+                    <div class="p-2 bg-slate-900 rounded border border-amber-900/40"><span class="text-amber-400 font-bold">Amber/Brown:</span> Terrain contours, elevation highlights.</div>
+                    <div class="p-2 bg-slate-900 rounded border border-emerald-900/40"><span class="text-emerald-400 font-bold">Green:</span> Airports with visual lighting / vegetated areas.</div>
+                </div>
+            </div>
+
+            <div class="pt-2 text-right">
+                <button onclick="closeHelpModal()" class="px-4 py-2 bg-cyan-500 text-slate-950 font-bold text-xs rounded-lg hover:bg-cyan-400">Got it</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+
+    <!-- APPLICATION DATA & LOGIC ENGINE -->
+    <script>
+        // =========================================================================
+        // 150 COMPREHENSIVE ICAO MAP SYMBOLS DATABASE
+        // =========================================================================
+        
+        // Dynamic SVG Helper Generator Functions for Crisp Aeronautical Icons
+        const svgGen = {
+            // General Airspace Box
+            airspaceBox: (color, dash, label, sub) => `
+                <svg viewBox="0 0 240 120" class="w-64 h-32">
+                    <rect x="10" y="10" width="220" height="100" rx="8" fill="none" stroke="${color}" stroke-width="3" stroke-dasharray="${dash}" />
+                    <rect x="10" y="10" width="220" height="100" fill="${color}" fill-opacity="0.08" />
+                    <text x="120" y="52" fill="${color}" font-family="sans-serif" font-weight="bold" font-size="16" text-anchor="middle">${label}</text>
+                    <text x="120" y="75" fill="#94A3B8" font-family="monospace" font-size="12" text-anchor="middle">${sub}</text>
+                </svg>`,
+
+            // Circular Navaid SVG
+            navaidShape: (innerSvg, label, freq) => `
+                <svg viewBox="0 0 240 130" class="w-64 h-32">
+                    <g transform="translate(120, 50)">
+                        ${innerSvg}
+                    </g>
+                    <rect x="40" y="90" width="160" height="30" rx="4" fill="#0F172A" stroke="#06B6D4" stroke-width="1.5" />
+                    <text x="120" y="110" fill="#E2E8F0" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">${label} ${freq}</text>
+                </svg>`,
+
+            // Standard Obstacle Mast
+            obstacle: (lighted, group, label) => `
+                <svg viewBox="0 0 200 130" class="w-56 h-32">
+                    <!-- Ground line -->
+                    <line x1="20" y1="110" x2="180" y2="110" stroke="#64748B" stroke-width="2" stroke-dasharray="4,4" />
+                    ${group ? `
+                        <path d="M 70 110 L 85 40 L 100 110 M 100 110 L 115 30 L 130 110" fill="none" stroke="#EC4899" stroke-width="3" stroke-linecap="round"/>
+                        ${lighted ? '<circle cx="85" cy="35" r="5" fill="#F59E0B"/><circle cx="115" cy="25" r="5" fill="#F59E0B"/>' : ''}
+                    ` : `
+                        <path d="M 80 110 L 100 35 L 120 110" fill="none" stroke="#EC4899" stroke-width="3.5" stroke-linecap="round"/>
+                        ${lighted ? '<circle cx="100" cy="28" r="6" fill="#F59E0B" class="glow-pulse"/>' : ''}
+                    `}
+                    <text x="100" y="125" fill="#CBD5E1" font-family="monospace" font-size="11" text-anchor="middle">${label}</text>
+                </svg>`,
+
+            // Airport / Aerodrome Diagram
+            aerodrome: (type, rwyCount, extra) => `
+                <svg viewBox="0 0 200 130" class="w-56 h-32">
+                    <circle cx="100" cy="60" r="45" fill="none" stroke="#10B981" stroke-width="3" />
+                    ${rwyCount >= 1 ? '<rect x="70" y="55" width="60" height="10" fill="#10B981" transform="rotate(-30 100 60)"/>' : ''}
+                    ${rwyCount >= 2 ? '<rect x="70" y="55" width="60" height="10" fill="#10B981" transform="rotate(40 100 60)"/>' : ''}
+                    ${type === 'MIL' ? '<circle cx="100" cy="60" r="35" fill="none" stroke="#10B981" stroke-width="2"/>' : ''}
+                    ${type === 'HELI' ? '<text x="100" y="68" fill="#10B981" font-weight="bold" font-size="24" font-family="sans-serif" text-anchor="middle">H</text>' : ''}
+                    ${extra || ''}
+                </svg>`,
+
+            // Generic Line Path Symbol
+            lineTrack: (strokeColor, dashPattern, textLabel, symbolInCenter) => `
+                <svg viewBox="0 0 240 120" class="w-64 h-32">
+                    <path d="M 20 60 L 220 60" stroke="${strokeColor}" stroke-width="3" stroke-dasharray="${dashPattern}" />
+                    ${symbolInCenter || ''}
+                    <rect x="70" y="20" width="100" height="24" rx="4" fill="#0F172A" stroke="${strokeColor}" stroke-width="1"/>
+                    <text x="120" y="36" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">${textLabel}</text>
+                </svg>`
+        };
+
+        // Master 150 Symbols Array
+        const rawSymbols = [
+            // ==================== 1. AIRSPACE & BOUNDARIES (1-25) ====================
+            {
+                id: 1,
+                name: "Prohibited Area (P)",
+                category: "airspace",
+                code: "ICAO-A01",
+                def: "Airspace of defined dimensions above land or territorial waters within which the flight of aircraft is completely prohibited.",
+                limits: "GND / UNL",
+                convention: "Blue/Magenta boundary with inward diagonal hatching & letter 'P' with identifier.",
+                sop: "Do not enter under any circumstances unless emergency arises or specific state authorization granted.",
+                svg: svgGen.airspaceBox("#EF4444", "0", "P-101 PROHIBITED", "GND / FL190")
+            },
+            {
+                id: 2,
+                name: "Restricted Area (R)",
+                category: "airspace",
+                code: "ICAO-A02",
+                def: "Airspace within which flight is restricted in accordance with specific specified conditions.",
+                limits: "Specified in NOTAM / AIP",
+                convention: "Hatched magenta line border with letter 'R' and designation.",
+                sop: "Flight allowed only with prior authorization from controlling ATC agency.",
+                svg: svgGen.airspaceBox("#EC4899", "6,4", "R-45 RESTRICTED", "2000ft AGL / FL120")
+            },
+            {
+                id: 3,
+                name: "Danger Area (D)",
+                category: "airspace",
+                code: "ICAO-A03",
+                def: "Airspace within which activities dangerous to the flight of aircraft may exist at specified times.",
+                limits: "SFC to FL240",
+                convention: "Magenta boundary with cross-hatching and letter 'D'.",
+                sop: "Exercise extreme caution; review active hours in NOTAM before cross-country flight.",
+                svg: svgGen.airspaceBox("#F59E0B", "4,4", "D-12 DANGER", "SFC / 5000ft MSL")
+            },
+            {
+                id: 4,
+                name: "Military Operations Area (MOA)",
+                category: "airspace",
+                code: "ICAO-A04",
+                def: "Airspace established to baseline non-hazardous military training activities from IFR traffic.",
+                limits: "500ft AGL - FL180",
+                convention: "Magenta comb line pattern along interior boundary.",
+                sop: "VFR permitted but high vigilance required; IFR traffic rerouted by ATC if active.",
+                svg: svgGen.airspaceBox("#EC4899", "8,4", "MOA FALCON", "500 AGL / FL180")
+            },
+            {
+                id: 5,
+                name: "Terminal Control Area (TMA / TCA)",
+                category: "airspace",
+                code: "ICAO-A05",
+                def: "Control area normally established at the confluence of ATC routes in the vicinity of major aerodromes.",
+                limits: "1000ft AGL / FL190",
+                convention: "Solid blue inner boundary with class designation letter.",
+                sop: "Two-way radio communication & Mode-C/S transponder mandatory prior to entry.",
+                svg: svgGen.airspaceBox("#06B6D4", "0", "TMA CLASS C", "1500ft / FL140")
+            },
+            {
+                id: 6,
+                name: "Control Zone (CTR)",
+                category: "airspace",
+                code: "ICAO-A06",
+                def: "A controlled airspace extending upwards from the surface of the earth to a specified upper limit.",
+                limits: "SFC / 2500ft AGL",
+                convention: "Blue dot-dashed line enclosing aerodrome visual arrival sector.",
+                sop: "Obtain clearance prior to entering CTR; maintain continuous ATC listening watch.",
+                svg: svgGen.airspaceBox("#06B6D4", "12,4,2,4", "CTR CLASS D", "SFC / 3000ft MSL")
+            },
+            {
+                id: 7,
+                name: "Control Area (CTA)",
+                category: "airspace",
+                code: "ICAO-A07",
+                def: "A controlled airspace extending upwards from a specified limit above the earth.",
+                limits: "700ft AGL - FL600",
+                convention: "Solid blue boundary with shaded altitude corridors.",
+                sop: "IFR flights require flight plan and clearance; VFR subject to class rules.",
+                svg: svgGen.airspaceBox("#3B82F6", "0", "CTA CLASS E", "1500 AGL / FL180")
+            },
+            {
+                id: 8,
+                name: "Flight Information Region (FIR)",
+                category: "airspace",
+                code: "ICAO-A08",
+                def: "An airspace of defined dimensions within which flight information service and alerting service are provided.",
+                limits: "SFC / FL190 or UNL",
+                convention: "Heavy dash-dot border with FIR center name.",
+                sop: "Contact FIR information frequency for advisory, weather updates, and flight tracking.",
+                svg: svgGen.airspaceBox("#64748B", "16,6,4,6", "LONDON FIR", "SFC / UNL")
+            },
+            {
+                id: 9,
+                name: "Upper Flight Information Region (UIR)",
+                category: "airspace",
+                code: "ICAO-A09",
+                def: "An upper airspace region above FL195 or FL245 providing high-altitude en-route services.",
+                limits: "FL195 / UNL",
+                convention: "Double-dashed line with 'UIR' callout text.",
+                sop: "High-level Jet routes; RVSM rules apply between FL290 and FL410.",
+                svg: svgGen.airspaceBox("#8B5CF6", "10,5", "SCOTTISH UIR", "FL195 / UNL")
+            },
+            {
+                id: 10,
+                name: "Aerodrome Traffic Zone (ATZ)",
+                category: "airspace",
+                code: "ICAO-A10",
+                def: "Defined airspace around an aerodrome established for the protection of aerodrome traffic.",
+                limits: "SFC / 2000ft AGL",
+                convention: "Dashed circle with radius (usually 2.5NM or 5NM).",
+                sop: "Maintain radio watch with Aerodrome TWR / AFIS before entering circuit.",
+                svg: svgGen.airspaceBox("#10B981", "4,4", "ATZ RAD 2.5NM", "SFC / 2000 AGL")
+            },
+            {
+                id: 11,
+                name: "Air Defense Identification Zone (ADIZ)",
+                category: "airspace",
+                code: "ICAO-A11",
+                def: "Airspace over land or water in which ready identification, location, and control of aircraft are required for national security.",
+                limits: "SFC / UNL",
+                convention: "Magenta zebra-patterned border with dots.",
+                sop: "File IFR/DVFR flight plan; establish 2-way radio contact before border penetration.",
+                svg: svgGen.airspaceBox("#EF4444", "12,3,12,3", "ADIZ BOUNDARY", "SFC / UNL")
+            },
+            {
+                id: 12,
+                name: "Temporary Segregated Area (TSA)",
+                category: "airspace",
+                code: "ICAO-A12",
+                def: "Airspace allocated for exclusive use of specific user during a defined period of time.",
+                limits: "As published via NOTAM",
+                convention: "Orange or magenta dotted box with 'TSA' tag.",
+                sop: "Avoid entering during active operational hours.",
+                svg: svgGen.airspaceBox("#F59E0B", "2,4", "TSA-04 ACTIVE", "FL100 / FL220")
+            },
+            {
+                id: 13,
+                name: "Class A Controlled Airspace",
+                category: "airspace",
+                code: "ICAO-A13",
+                def: "IFR flights only permitted; all flights subject to ATC clearance and separated from each other.",
+                limits: "FL180 / FL600",
+                convention: "Solid dark blue outline with 'CLASS A' callout.",
+                sop: "VFR strictly prohibited. Continuous 2-way comms & transponder mandatory.",
+                svg: svgGen.airspaceBox("#1E3A8A", "0", "CLASS A AIRSPACE", "FL180 / FL600")
+            },
+            {
+                id: 14,
+                name: "Class B Airspace",
+                category: "airspace",
+                code: "ICAO-A14",
+                def: "IFR and VFR flights permitted; all flights provided ATC clearance and separated.",
+                limits: "SFC / 10,000ft MSL",
+                convention: "Solid cyan double boundary ring.",
+                sop: "Explicit 'Cleared into Class B' required prior to entry for VFR.",
+                svg: svgGen.airspaceBox("#0284C7", "0", "CLASS B", "SFC / 10000 MSL")
+            },
+            {
+                id: 15,
+                name: "Class C Airspace",
+                category: "airspace",
+                code: "ICAO-A15",
+                def: "IFR & VFR permitted; IFR separated from IFR/VFR; VFR receives IFR traffic info.",
+                limits: "SFC / 4,000ft AGL",
+                convention: "Solid magenta boundary line.",
+                sop: "Establish two-way radio contact (ATC callsign response) before entering.",
+                svg: svgGen.airspaceBox("#D946EF", "0", "CLASS C", "SFC / 4000 AGL")
+            },
+            {
+                id: 16,
+                name: "Class D Airspace",
+                category: "airspace",
+                code: "ICAO-A16",
+                def: "IFR & VFR permitted; IFR separated from IFR; VFR receives traffic info on all other flights.",
+                limits: "SFC / 2,500ft AGL",
+                convention: "Dashed blue border ring.",
+                sop: "Establish 2-way communications before entering; 3 SM vis / 500' below, 1000' above clouds.",
+                svg: svgGen.airspaceBox("#0284C7", "6,6", "CLASS D", "SFC / 2500 AGL")
+            },
+            {
+                id: 17,
+                name: "Class E Controlled Airspace",
+                category: "airspace",
+                code: "ICAO-A17",
+                def: "Controlled airspace where IFR flights receive ATC separation; VFR flights do not require ATC clearance.",
+                limits: "700ft AGL or 1200ft AGL / FL180",
+                convention: "Magenta vignette shadow border.",
+                sop: "VFR no clearance required; maintain weather visual minima.",
+                svg: svgGen.airspaceBox("#06B6D4", "12,6", "CLASS E", "700 AGL / FL180")
+            },
+            {
+                id: 18,
+                name: "Class F Uncontrolled Airspace",
+                category: "airspace",
+                code: "ICAO-A18",
+                def: "Advisory airspace where IFR flights receive advisory services; VFR receives flight info if requested.",
+                limits: "SFC / 5000ft MSL",
+                convention: "Broken line border with diagonal cross-hatch accents.",
+                sop: "Participate in advisory frequency; exercise vigilance.",
+                svg: svgGen.airspaceBox("#64748B", "4,4", "CLASS F ADVISORY", "SFC / 5000 MSL")
+            },
+            {
+                id: 19,
+                name: "Class G Uncontrolled Airspace",
+                category: "airspace",
+                code: "ICAO-A19",
+                def: "Uncontrolled airspace; IFR & VFR receive flight information and alerting services upon request.",
+                limits: "SFC / 1200ft AGL",
+                convention: "No explicit boundary; default background area.",
+                sop: "See-and-be-seen rules apply; observe clear-of-cloud visibility requirements.",
+                svg: svgGen.airspaceBox("#475569", "2,8", "CLASS G UNCONTROLLED", "SFC / 1200 AGL")
+            },
+            {
+                id: 20,
+                name: "Buffer Zone (BZR)",
+                category: "airspace",
+                code: "ICAO-A20",
+                def: "Airspace extending adjacent to prohibited or international boundaries to prevent inadvertent intrusion.",
+                limits: "SFC / FL100",
+                convention: "Dotted line parallel to border with shading.",
+                sop: "Maintain precise navigation; monitor border advisory frequency.",
+                svg: svgGen.airspaceBox("#F59E0B", "2,2", "BUFFER ZONE BZR", "SFC / FL100")
+            },
+            {
+                id: 21,
+                name: "Transponder Mandatory Zone (TMZ)",
+                category: "airspace",
+                code: "ICAO-A21",
+                def: "Airspace where carriage and operation of SSR transponder with Mode C or S is compulsory.",
+                limits: "SFC / FL100",
+                convention: "Magenta line with 'TMZ' text boxes.",
+                sop: "Squawk designated code or 7000/1200 with altitude reporting ON.",
+                svg: svgGen.airspaceBox("#EC4899", "6,2,2,2", "TMZ - SQUAWK ALT", "1000 AGL / FL100")
+            },
+            {
+                id: 22,
+                name: "Radio Mandatory Zone (RMZ)",
+                category: "airspace",
+                code: "ICAO-A22",
+                def: "Airspace in which the maintenance of two-way radio communication is mandatory for all aircraft.",
+                limits: "SFC / 3000ft AGL",
+                convention: "Blue line with embedded 'RMZ' text labels.",
+                sop: "Make position reports on designated frequency prior to entry.",
+                svg: svgGen.airspaceBox("#06B6D4", "10,2", "RMZ 119.700 MHz", "SFC / 3000 AGL")
+            },
+            {
+                id: 23,
+                name: "Temporary Restricted Area (TRA)",
+                category: "airspace",
+                code: "ICAO-A23",
+                def: "Airspace temporarily restricted for military or special operations, passable under ATC instruction.",
+                limits: "As published",
+                convention: "Hatched border with 'TRA' callout.",
+                sop: "Check active status via flight service station before takeoff.",
+                svg: svgGen.airspaceBox("#EF4444", "4,4", "TRA 202 ACTIVE", "FL080 / FL150")
+            },
+            {
+                id: 24,
+                name: "Oceanic Control Area (OCA)",
+                category: "airspace",
+                code: "ICAO-A24",
+                def: "An oceanic airspace of defined dimensions where oceanic air traffic control services are provided.",
+                limits: "FL055 / UNL",
+                convention: "Large rectangular coordinates box on oceanic charts.",
+                sop: "HF radio or CPDLC/ADS-C clearance required; position reporting via waypoints.",
+                svg: svgGen.airspaceBox("#3B82F6", "20,10", "SHANWICK OCA", "FL055 / UNL")
+            },
+            {
+                id: 25,
+                name: "Altisurface / High Altitude Landing Zone",
+                category: "airspace",
+                code: "ICAO-A25",
+                def: "Mountainous landing area specifically designated for mountain flying operations.",
+                limits: "SFC",
+                convention: "Mountain peak symbol with runway strip icon.",
+                sop: "Requires mountain rating; obey one-way approach and departure rules.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 30 100 L 90 30 L 120 70 L 170 100 Z" fill="#334155" stroke="#94A3B8" stroke-width="2"/>
+                    <rect x="80" y="50" width="40" height="8" fill="#10B981" transform="rotate(-25 100 54)"/>
+                    <text x="100" y="115" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">ALTISURFACE (MNT)</text>
+                </svg>`
+            },
+
+            // ==================== 2. OBSTACLES & SURFACE HAZARDS (26-55) ====================
+            {
+                id: 26,
+                name: "Unlighted Single Obstacle",
+                category: "obstacle",
+                code: "ICAO-O01",
+                def: "A fixed vertical structure extending above 100m AGL or specified elevation, without lighting.",
+                limits: "> 300ft AGL",
+                convention: "Single inverted V symbol with elevation numerals.",
+                sop: "Maintain 1,000ft clearance in mountainous areas, 500ft in non-mountainous.",
+                svg: svgGen.obstacle(false, false, "345 (120)")
+            },
+            {
+                id: 27,
+                name: "Lighted Single Obstacle",
+                category: "obstacle",
+                code: "ICAO-O02",
+                def: "A prominent vertical hazard equipped with red obstruction light or strobe.",
+                limits: "> 300ft AGL",
+                convention: "Inverted V symbol with starburst light rays at top.",
+                sop: "Visual reference for night VFR; avoid ground proximity.",
+                svg: svgGen.obstacle(true, false, "480 (210) LGT")
+            },
+            {
+                id: 28,
+                name: "Group of Obstacles (Unlighted)",
+                category: "obstacle",
+                code: "ICAO-O03",
+                def: "Multiple vertical structures close together extending above surrounding terrain.",
+                limits: "> 300ft AGL",
+                convention: "Dual overlapping inverted V symbols.",
+                sop: "Treat whole area as obstacle hazard; give wide lateral clearance.",
+                svg: svgGen.obstacle(false, true, "520 (180)")
+            },
+            {
+                id: 29,
+                name: "Group of Obstacles (Lighted)",
+                category: "obstacle",
+                code: "ICAO-O04",
+                def: "Multiple towers/masts in close proximity equipped with hazard lighting.",
+                limits: "> 300ft AGL",
+                convention: "Dual inverted V symbols with top light halos.",
+                sop: "Observe elevated terrain clearance during night vectoring.",
+                svg: svgGen.obstacle(true, true, "610 (310) LGT")
+            },
+            {
+                id: 30,
+                name: "Wind Turbine / Wind Farm",
+                category: "obstacle",
+                code: "ICAO-O05",
+                def: "Single wind generator or cluster of wind turbines presenting vertical hazard and turbulence.",
+                limits: "Up to 800ft AGL",
+                convention: "Windmill propeller symbol or boxed area with prop icon.",
+                sop: "Expect severe low-level wake turbulence downwind of rotor blades.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <line x1="20" y1="105" x2="180" y2="105" stroke="#64748B" stroke-width="2"/>
+                    <path d="M 100 105 L 100 40" stroke="#06B6D4" stroke-width="3"/>
+                    <circle cx="100" cy="40" r="4" fill="#06B6D4"/>
+                    <line x1="100" y1="40" x2="70" y2="20" stroke="#06B6D4" stroke-width="2.5"/>
+                    <line x1="100" y1="40" x2="130" y2="20" stroke="#06B6D4" stroke-width="2.5"/>
+                    <line x1="100" y1="40" x2="100" y2="75" stroke="#06B6D4" stroke-width="2.5"/>
+                    <text x="100" y="118" fill="#CBD5E1" font-family="monospace" font-size="11" text-anchor="middle">WIND FARM 450 AGL</text>
+                </svg>`
+            },
+            {
+                id: 31,
+                name: "High-Voltage Power Line",
+                category: "obstacle",
+                code: "ICAO-O06",
+                def: "Overhead electrical transmission lines supported by pylons crossing flight paths.",
+                limits: "Surface - 250ft AGL",
+                convention: "Line string with pylon T-bar crosses or dots.",
+                sop: "Maintain high vigilance during low-level VFR; cross directly over pylons if low.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 10 70 Q 100 95 190 70" fill="none" stroke="#F59E0B" stroke-width="2"/>
+                    <path d="M 60 90 L 60 50 M 50 55 L 70 55" stroke="#F59E0B" stroke-width="2"/>
+                    <path d="M 140 90 L 140 50 M 130 55 L 150 55" stroke="#F59E0B" stroke-width="2"/>
+                    <text x="100" y="112" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">POWER LINE (PWR)</text>
+                </svg>`
+            },
+            {
+                id: 32,
+                name: "Aerial Cableway / Telpher",
+                category: "obstacle",
+                code: "ICAO-O07",
+                def: "Cable transport system across valleys or mountains posing severe cable collision hazard.",
+                limits: "Valleys / Mountain spans",
+                convention: "Line with open square cable car indicators.",
+                sop: "Extreme caution in alpine valleys; cables are virtually invisible from cockpit.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <line x1="20" y1="30" x2="180" y2="90" stroke="#EC4899" stroke-width="2"/>
+                    <rect x="90" y="55" width="12" height="12" fill="#EC4899" />
+                    <text x="100" y="112" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">CABLEWAY / TELPHER</text>
+                </svg>`
+            },
+            {
+                id: 33,
+                name: "Prominent Pylon / Tower Structure",
+                category: "obstacle",
+                code: "ICAO-O08",
+                def: "Tall steel lattice pylon or guyed communications mast exceeding 1000ft AGL.",
+                limits: "> 1000ft AGL",
+                convention: "Lattice tower drawing with height numerals in bold.",
+                sop: "Beware guy wires extending up to 2,000ft laterally from mast base.",
+                svg: svgGen.obstacle(true, false, "1040 (1010) TWR")
+            },
+            {
+                id: 34,
+                name: "Construction Crane Hazard",
+                category: "obstacle",
+                code: "ICAO-O09",
+                def: "Temporary heavy crane erect near aerodrome movement area or flight path.",
+                limits: "Temporary / Variable",
+                convention: "Crane silhouette with 'CRANE' label and light indicator.",
+                sop: "Review aerodrome NOTAMs for temporary crane elevation updates.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 70 100 L 100 30 L 160 30" stroke="#F59E0B" stroke-width="3" fill="none"/>
+                    <circle cx="100" cy="30" r="4" fill="#EF4444"/>
+                    <line x1="150" y1="30" x2="150" y2="70" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="2,2"/>
+                    <text x="100" y="115" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">CRANE 280 AGL</text>
+                </svg>`
+            },
+            {
+                id: 35,
+                name: "Flared Gas Stack / Industrial Vent",
+                category: "obstacle",
+                code: "ICAO-O10",
+                def: "Refinery stack emitting continuous or intermittent high-velocity thermal flame plume.",
+                limits: "SFC - 3000ft AGL",
+                convention: "Stack mast with flame symbol top.",
+                sop: "Severe thermal turbulence and engine flameout risk; avoid overflight by 3NM.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="92" y="50" width="16" height="55" fill="#64748B"/>
+                    <path d="M 100 20 Q 85 35 100 50 Q 115 35 100 20 Z" fill="#EF4444"/>
+                    <path d="M 100 28 Q 92 38 100 50 Q 108 38 100 28 Z" fill="#F59E0B"/>
+                    <text x="100" y="118" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">GAS FLARE STACK</text>
+                </svg>`
+            },
+            {
+                id: 36,
+                name: "Offshore Oil / Gas Rig",
+                category: "obstacle",
+                code: "ICAO-O11",
+                def: "Permanent marine structure equipped with helideck and navigation light beacon.",
+                limits: "Sea level",
+                convention: "Platform box with light rays & 'RIG' identifier.",
+                sop: "Contact platform radio prior to helideck approach; watch for flare stack.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="60" y="60" width="80" height="30" fill="#334155" stroke="#06B6D4" stroke-width="2"/>
+                    <line x1="75" y1="90" x2="75" y2="110" stroke="#06B6D4" stroke-width="3"/>
+                    <line x1="125" y1="90" x2="125" y2="110" stroke="#06B6D4" stroke-width="3"/>
+                    <text x="100" y="80" fill="#E2E8F0" font-family="sans-serif" font-weight="bold" font-size="12" text-anchor="middle">RIG BRAVO</text>
+                </svg>`
+            },
+            {
+                id: 37,
+                name: "Active Volcano / Volcanic Ash Risk",
+                category: "obstacle",
+                code: "ICAO-O12",
+                def: "Active volcanic vent capable of discharging explosive ash plume dangerous to turbine engines.",
+                limits: "SFC to High Altitude",
+                convention: "Volcano icon with ash cloud lines.",
+                sop: "Immediately divert if volcanic ash is encountered; do not fly through visible ash clouds.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 50 100 L 85 45 L 115 45 L 150 100 Z" fill="#334155" stroke="#EF4444" stroke-width="2"/>
+                    <path d="M 85 40 Q 70 10 100 10 Q 130 10 115 40 Z" fill="#EF4444" opacity="0.6"/>
+                    <text x="100" y="115" fill="#EF4444" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">VOLCANIC HAZARD</text>
+                </svg>`
+            },
+            {
+                id: 38,
+                name: "Glacier Field / Permanent Ice",
+                category: "obstacle",
+                code: "ICAO-O13",
+                def: "Glacial ice cover presenting whiteout hazards and visual elevation illusions.",
+                limits: "Surface",
+                convention: "Cyan dotted pattern with glacier boundary line.",
+                sop: "Rely on flight instruments for altitude; whiteout can eliminate horizon.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 20 80 Q 70 30 180 60 L 180 100 L 20 100 Z" fill="#06B6D4" fill-opacity="0.15" stroke="#06B6D4" stroke-dasharray="4,4"/>
+                    <text x="100" y="80" fill="#06B6D4" font-family="monospace" font-size="12" text-anchor="middle">GLACIER / ICE FIELD</text>
+                </svg>`
+            },
+            {
+                id: 39,
+                name: "Sand Dunes / Mobile Terrain",
+                category: "obstacle",
+                code: "ICAO-O14",
+                def: "Shiftable desert sand ridges whose elevations fluctuate over time.",
+                limits: "Surface",
+                convention: "Brown crescent wave lines.",
+                sop: "Add safety margin to charted dune elevations due to wind movement.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 20 60 Q 60 40 100 60 Q 140 40 180 60" fill="none" stroke="#F59E0B" stroke-width="2"/>
+                    <path d="M 40 85 Q 80 65 120 85 Q 160 65 200 85" fill="none" stroke="#F59E0B" stroke-width="2"/>
+                    <text x="100" y="110" fill="#F59E0B" font-family="monospace" font-size="11" text-anchor="middle">SAND DUNES (CHANGING)</text>
+                </svg>`
+            },
+            {
+                id: 40,
+                name: "Coral Reef / Shallow Shoal",
+                category: "obstacle",
+                code: "ICAO-O15",
+                def: "Submerged marine reef hazard dangerous for seaplane water landings.",
+                limits: "Sea level",
+                convention: "Cyan scalloped border around stippled area.",
+                sop: "Seaplane pilots verify water depth and submerged hazards before touchdown.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <ellipse cx="100" cy="60" rx="70" ry="35" fill="#06B6D4" fill-opacity="0.2" stroke="#06B6D4" stroke-width="2" stroke-dasharray="2,2"/>
+                    <text x="100" y="65" fill="#06B6D4" font-family="monospace" font-size="11" text-anchor="middle">REEF / SHOAL AREA</text>
+                </svg>`
+            },
+            {
+                id: 41,
+                name: "Submerged Shipwreck Hazard",
+                category: "obstacle",
+                code: "ICAO-O16",
+                def: "Sunken vessel hull unmasked or partially submerged in shallow water.",
+                limits: "Sea surface",
+                convention: "Masted ship hull symbol with cross overlay.",
+                sop: "Water landing hazard for amphibious operations.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 60 70 C 80 90 120 90 140 70 Z" fill="#334155" stroke="#94A3B8" stroke-width="2"/>
+                    <line x1="100" y1="35" x2="100" y2="70" stroke="#94A3B8" stroke-width="2"/>
+                    <line x1="85" y1="50" x2="115" y2="50" stroke="#94A3B8" stroke-width="2"/>
+                    <text x="100" y="112" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">SHIPWRECK HAZARD</text>
+                </svg>`
+            },
+            {
+                id: 42,
+                name: "Elevated Water Tower",
+                category: "obstacle",
+                code: "ICAO-O17",
+                def: "Prominent municipal water tank elevated above ground level.",
+                limits: "100ft - 250ft AGL",
+                convention: "Water tank circle icon on stilts.",
+                sop: "Useful VFR visual check point in suburban regions.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <ellipse cx="100" cy="45" rx="30" ry="18" fill="#334155" stroke="#06B6D4" stroke-width="2"/>
+                    <line x1="80" y1="55" x2="70" y2="100" stroke="#06B6D4" stroke-width="2.5"/>
+                    <line x1="120" y1="55" x2="130" y2="100" stroke="#06B6D4" stroke-width="2.5"/>
+                    <text x="100" y="118" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">WATER TOWER 210 AGL</text>
+                </svg>`
+            },
+            {
+                id: 43,
+                name: "Mine Quarry / Excavation Pits",
+                category: "obstacle",
+                code: "ICAO-O18",
+                def: "Deep surface excavation site with potential blasting turbulence and dust obscuration.",
+                limits: "SFC to 1500 AGL",
+                convention: "Pickaxe icon or stepped pit lines.",
+                sop: "Expect blast warnings; do not fly low over open-pit mining.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="50" y="40" width="100" height="50" rx="6" fill="none" stroke="#F59E0B" stroke-dasharray="4,4" stroke-width="2"/>
+                    <text x="100" y="68" fill="#F59E0B" font-family="sans-serif" font-weight="bold" font-size="12" text-anchor="middle">OPEN PIT MINE</text>
+                    <text x="100" y="112" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">BLASTING HAZARD</text>
+                </svg>`
+            },
+            {
+                id: 44,
+                name: "Cooling Towers / Thermal Plumes",
+                category: "obstacle",
+                code: "ICAO-O19",
+                def: "Nuclear or thermal power station hyperbolic towers discharging massive steam and convective turbulence.",
+                limits: "SFC - 4000ft AGL",
+                convention: "Hyperbolic tower outline with cloud vapor tops.",
+                sop: "Avoid flight directly overhead due to severe thermal updrafts and loss of engine power risk.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 80 100 Q 90 65 85 40 L 115 40 Q 110 65 120 100 Z" fill="#334155" stroke="#94A3B8" stroke-width="2"/>
+                    <circle cx="100" cy="25" r="12" fill="#94A3B8" opacity="0.4"/>
+                    <text x="100" y="118" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">COOLING TOWER HAZARD</text>
+                </svg>`
+            },
+            {
+                id: 45,
+                name: "Tethered Aerostat Balloon Line",
+                category: "obstacle",
+                code: "ICAO-O20",
+                def: "Moored radar surveillance balloon attached by high-tensile steel cable.",
+                limits: "SFC to 15,000ft MSL",
+                convention: "Balloon icon with steel cable line down to ground point.",
+                sop: "Extremely hazardous cable extend up to 15,000ft MSL; stay clear by at least 5NM.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <ellipse cx="100" cy="30" rx="18" ry="12" fill="#EF4444"/>
+                    <line x1="100" y1="42" x2="100" y2="100" stroke="#EF4444" stroke-width="2" stroke-dasharray="2,2"/>
+                    <text x="100" y="115" fill="#EF4444" font-family="monospace" font-size="11" text-anchor="middle">TETHERED BALLOON 14000 MSL</text>
+                </svg>`
+            },
+            {
+                id: 46,
+                name: "High-Riser Building Cluster",
+                category: "obstacle",
+                code: "ICAO-O21",
+                def: "Dense urban skyscraper sector with obstacle heights varying across city.",
+                limits: "Up to 1500ft AGL",
+                convention: "Hatched block area outline with max elevation.",
+                sop: "Observe minimum safe altitude rule (1,000ft above highest obstacle within 2,000ft radius).",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="60" y="50" width="25" height="50" fill="#334155" stroke="#EC4899"/>
+                    <rect x="88" y="30" width="30" height="70" fill="#1E293B" stroke="#EC4899" stroke-width="2"/>
+                    <rect x="121" y="60" width="20" height="40" fill="#334155" stroke="#EC4899"/>
+                    <text x="100" y="118" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">URBAN CLUSTER 890 MSL</text>
+                </svg>`
+            },
+            {
+                id: 47,
+                name: "Lighthouse Beacon (Coastal)",
+                category: "obstacle",
+                code: "ICAO-O22",
+                def: "Prominent coastal light tower functioning as visual fix.",
+                limits: "Surface",
+                convention: "Dot inside starburst circle.",
+                sop: "Excellent visual reference for VFR coastal navigation.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 90 90 L 95 40 L 105 40 L 110 90 Z" fill="#334155" stroke="#F59E0B" stroke-width="2"/>
+                    <circle cx="100" cy="35" r="8" fill="#F59E0B" class="glow-pulse"/>
+                    <text x="100" y="112" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">LIGHTHOUSE (Fl W 10s)</text>
+                </svg>`
+            },
+            {
+                id: 48,
+                name: "Mooring Mast / Airship Tower",
+                category: "obstacle",
+                code: "ICAO-O23",
+                def: "High tower specialized for airship mooring.",
+                limits: "200ft AGL",
+                convention: "Tower mast with oval airship top indicator.",
+                sop: "Standard vertical clearance applies.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <line x1="100" y1="100" x2="100" y2="40" stroke="#06B6D4" stroke-width="3"/>
+                    <ellipse cx="100" cy="35" rx="15" ry="8" fill="none" stroke="#06B6D4" stroke-width="2"/>
+                    <text x="100" y="115" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">AIRSHIP MOORING TWR</text>
+                </svg>`
+            },
+            {
+                id: 49,
+                name: "Radio Astronomy Telescope Dish",
+                category: "obstacle",
+                code: "ICAO-O24",
+                def: "Large parabolic antenna structure emitting/receiving high radio frequencies.",
+                limits: "SFC to 300ft AGL",
+                convention: "Parabolic dish outline icon.",
+                sop: "Avoid high-power radio interference vectors.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 70 40 Q 100 80 130 40" fill="none" stroke="#06B6D4" stroke-width="3"/>
+                    <line x1="100" y1="60" x2="100" y2="100" stroke="#06B6D4" stroke-width="3"/>
+                    <text x="100" y="115" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">RAD ASTRONOMY DISH</text>
+                </svg>`
+            },
+            {
+                id: 50,
+                name: "Solar Power Array / Glare Hazard",
+                category: "obstacle",
+                code: "ICAO-O25",
+                def: "Concentrated photovoltaic panel field causing extreme solar glint/glare.",
+                limits: "Surface",
+                convention: "Grid field box with sun reflection ray.",
+                sop: "Be alert for temporary flash blindness on approach vector.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="50" y="45" width="100" height="40" fill="#1E293B" stroke="#F59E0B" stroke-width="2"/>
+                    <path d="M 50 65 L 150 65 M 100 45 L 100 85" stroke="#F59E0B" stroke-width="1"/>
+                    <text x="100" y="112" fill="#F59E0B" font-family="monospace" font-size="11" text-anchor="middle">SOLAR GLARE HAZARD</text>
+                </svg>`
+            },
+            {
+                id: 51,
+                name: "High Tension Cable Span over River",
+                category: "obstacle",
+                code: "ICAO-O26",
+                def: "Power lines traversing wide river canyons or waterways.",
+                limits: "Low level across water",
+                convention: "River line crossed by powerline symbol with ball markers.",
+                sop: "Extreme hazard for floatplanes and low-altitude flights; cross well above top cable.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 20 20 Q 100 60 180 20" fill="none" stroke="#06B6D4" stroke-width="12" opacity="0.3"/>
+                    <line x1="30" y1="60" x2="170" y2="60" stroke="#EF4444" stroke-width="2"/>
+                    <circle cx="70" cy="60" r="4" fill="#EF4444"/>
+                    <circle cx="130" cy="60" r="4" fill="#EF4444"/>
+                    <text x="100" y="112" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">RIVER CABLE SPAN</text>
+                </svg>`
+            },
+            {
+                id: 52,
+                name: "Bridge Structure Hazard",
+                category: "obstacle",
+                code: "ICAO-O27",
+                def: "Suspension bridge towers extending into low-altitude flight paths.",
+                limits: "Up to 800ft AGL",
+                convention: "Bridge span icon with tower elevation callouts.",
+                sop: "Do not fly under bridges; adhere to minimum altitude clearance.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 30 70 L 170 70 M 70 70 L 70 30 M 130 70 L 130 30" stroke="#94A3B8" stroke-width="3"/>
+                    <path d="M 30 70 Q 70 30 130 30 Q 170 70 170 70" fill="none" stroke="#94A3B8" stroke-width="1.5"/>
+                    <text x="100" y="112" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">BRIDGE TOWERS 540 MSL</text>
+                </svg>`
+            },
+            {
+                id: 53,
+                name: "Blasting Ground / Demolition Range",
+                category: "obstacle",
+                code: "ICAO-O28",
+                def: "Area where unannounced explosive detonations eject rock fragments upwards.",
+                limits: "SFC to 5000ft AGL",
+                convention: "Explosion starburst icon with red ring.",
+                sop: "Strictly avoid overflight; flying rocks can strike aircraft.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 100 25 L 110 45 L 130 35 L 120 55 L 140 65 L 120 75 L 130 95 L 110 85 L 100 105 L 90 85 L 70 95 L 80 75 L 60 65 L 80 55 L 70 35 L 90 45 Z" fill="#EF4444"/>
+                    <text x="100" y="118" fill="#EF4444" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">BLASTING AREA</text>
+                </svg>`
+            },
+            {
+                id: 54,
+                name: "High Energy Laser Emission Site",
+                category: "obstacle",
+                code: "ICAO-O29",
+                def: "Optical research facility emitting high-intensity laser beams skyward.",
+                limits: "SFC / UNL",
+                convention: "Laser beam starburst icon inside hazard triangle.",
+                sop: "Permanent eye damage risk; do not look down toward site if illuminated.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <polygon points="100,20 150,90 50,90" stroke="#EC4899" stroke-width="3" fill="none"/>
+                    <line x1="100" y1="80" x2="100" y2="35" stroke="#EC4899" stroke-width="3"/>
+                    <text x="100" y="112" fill="#EC4899" font-family="monospace" font-size="11" text-anchor="middle">LASER HAZARD ZONE</text>
+                </svg>`
+            },
+            {
+                id: 55,
+                name: "Gas Venting / Pipeline Compression Stn",
+                category: "obstacle",
+                code: "ICAO-O30",
+                def: "Station releasing invisible light-hydrocarbon gas vents reducing air density and creating fire hazard.",
+                limits: "SFC to 1500 AGL",
+                convention: "Wavy upward gas arrows icon.",
+                sop: "Invisible hazardous gas can cause engine power loss or detonation.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 80 90 Q 70 60 90 40 M 100 90 Q 110 60 95 40 M 120 90 Q 110 60 125 40" stroke="#F59E0B" stroke-width="2.5" fill="none"/>
+                    <text x="100" y="112" fill="#F59E0B" font-family="monospace" font-size="11" text-anchor="middle">INVISIBLE GAS VENT</text>
+                </svg>`
+            },
+
+            // ==================== 3. NAVAIDS & FIXES (56-90) ====================
+            {
+                id: 56,
+                name: "VHF Omnidirectional Range (VOR)",
+                category: "navaid",
+                code: "ICAO-N01",
+                def: "Ground-based radio navigation aid emitting 360 individual radial tracks.",
+                limits: "Line of sight",
+                convention: "Hexagon symbol enclosed in frequency callout box.",
+                sop: "Tune frequency, verify Morse code identifier, align OBS needle.",
+                svg: svgGen.navaidShape('<polygon points="0,-20 18,-6 18,16 0,26 -18,16 -18,-6" fill="none" stroke="#06B6D4" stroke-width="3"/><circle cx="0" cy="3" r="3" fill="#06B6D4"/>', "MAY VOR", "117.90")
+            },
+            {
+                id: 57,
+                name: "Distance Measuring Equipment (DME)",
+                category: "navaid",
+                code: "ICAO-N02",
+                def: "UHF transponder providing slant-range distance in nautical miles to aircraft.",
+                limits: "Line of sight",
+                convention: "Square symbol enclosing small center square.",
+                sop: "Displays slant range distance; note distance increases with altitude directly over station.",
+                svg: svgGen.navaidShape('<rect x="-18" y="-15" width="36" height="36" fill="none" stroke="#06B6D4" stroke-width="3"/>', "TOP DME", "CH 47X")
+            },
+            {
+                id: 58,
+                name: "VOR with DME (VOR/DME)",
+                category: "navaid",
+                code: "ICAO-N03",
+                def: "Collocated VOR bearing and DME distance navigation facility.",
+                limits: "Line of sight",
+                convention: "Hexagon enclosed inside a square box.",
+                sop: "Provides both magnetic bearing and slant-range distance from single station.",
+                svg: svgGen.navaidShape('<rect x="-22" y="-18" width="44" height="40" fill="none" stroke="#06B6D4" stroke-width="2.5"/><polygon points="0,-14 14,-4 14,10 0,18 -14,10 -14,-4" fill="none" stroke="#06B6D4" stroke-width="2.5"/>', "CPT VOR/DME", "114.35")
+            },
+            {
+                id: 59,
+                name: "Tactical Air Navigation (TACAN)",
+                category: "navaid",
+                code: "ICAO-N04",
+                def: "UHF military navigation aid providing bearing and distance information.",
+                limits: "Line of sight",
+                convention: "Triangle with solid rectangular wedge projections.",
+                sop: "Civilian aircraft use DME portion only if paired.",
+                svg: svgGen.navaidShape('<polygon points="0,-22 20,15 -20,15" fill="none" stroke="#06B6D4" stroke-width="3"/><rect x="-5" y="-22" width="10" height="6" fill="#06B6D4"/>', "NHK TACAN", "CH 109")
+            },
+            {
+                id: 60,
+                name: "VORTAC (VOR + TACAN)",
+                category: "navaid",
+                code: "ICAO-N05",
+                def: "Combined facility consisting of VOR for civilian azimuth and TACAN for military azimuth/DME.",
+                limits: "Line of sight",
+                convention: "Hexagon with three solid outer black notches.",
+                sop: "Civilian aircraft receive VOR bearing and TACAN distance (DME).",
+                svg: svgGen.navaidShape('<polygon points="0,-18 16,-6 16,12 0,22 -16,12 -16,-6" fill="none" stroke="#06B6D4" stroke-width="3"/><rect x="-18" y="-4" width="6" height="12" fill="#06B6D4"/><rect x="12" y="-4" width="6" height="12" fill="#06B6D4"/><rect x="-3" y="18" width="6" height="6" fill="#06B6D4"/>', "OAK VORTAC", "116.80")
+            },
+            {
+                id: 61,
+                name: "Non-Directional Beacon (NDB)",
+                category: "navaid",
+                code: "ICAO-N06",
+                def: "Low/Medium frequency radio beacon broadcasting omnidirectional signals for ADF tracking.",
+                limits: "Ground wave propagation",
+                convention: "Cluster of dots or ring of dots around center point.",
+                sop: "Tune LF frequency, monitor Morse code ID continuously due to lack of failure warning flag.",
+                svg: svgGen.navaidShape('<circle cx="0" cy="3" r="18" stroke="#06B6D4" stroke-width="2" stroke-dasharray="3,3" fill="none"/><circle cx="0" cy="3" r="4" fill="#06B6D4"/>', "SY NDB", "342 kHz")
+            },
+            {
+                id: 62,
+                name: "Compulsory En-Route Reporting Point",
+                category: "navaid",
+                code: "ICAO-N07",
+                def: "Mandatory position fix where aircraft must report position, altitude, and ETA to ATC.",
+                limits: "En-route",
+                convention: "Solid filled triangle symbol.",
+                sop: "Transmit position report format: Identifier, Time, Altitude, Next fix ETA.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <polygon points="100,25 130,80 70,80" fill="#06B6D4"/>
+                    <text x="100" y="105" fill="#E2E8F0" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">GORPA (COMPULSORY)</text>
+                </svg>`
+            },
+            {
+                id: 63,
+                name: "Non-Compulsory Reporting Point",
+                category: "navaid",
+                code: "ICAO-N08",
+                def: "On-request reporting fix; position report required only when specifically instructed by ATC.",
+                limits: "En-route",
+                convention: "Open outline triangle symbol.",
+                sop: "Report position only if requested by air traffic controller.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <polygon points="100,25 130,80 70,80" fill="none" stroke="#06B6D4" stroke-width="3"/>
+                    <text x="100" y="105" fill="#E2E8F0" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">LIZAD (ON-REQUEST)</text>
+                </svg>`
+            },
+            {
+                id: 64,
+                name: "RNAV / RNP Fly-By Waypoint",
+                category: "navaid",
+                code: "ICAO-N09",
+                def: "GNSS fix allowing aircraft to initiate turn anticipation prior to reaching waypoint.",
+                limits: "En-route / Terminal",
+                convention: "Open 4-point star/four-pointed diamond.",
+                sop: "FMS will calculate turn anticipation curve prior to overhead.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <polygon points="100,20 115,50 145,50 120,70 130,100 100,80 70,100 80,70 55,50 85,50" fill="none" stroke="#06B6D4" stroke-width="2.5"/>
+                    <text x="100" y="115" fill="#E2E8F0" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">FLY-BY (KENTT)</text>
+                </svg>`
+            },
+            {
+                id: 65,
+                name: "RNAV / RNP Fly-Over Waypoint",
+                category: "navaid",
+                code: "ICAO-N10",
+                def: "GNSS waypoint that must be passed directly overhead before turn initiation.",
+                limits: "En-route / Terminal / MAPt",
+                convention: "4-point star symbol enclosed inside a circle ring.",
+                sop: "Aircraft flies directly over waypoint prior to starting turn.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="100" cy="55" r="32" fill="none" stroke="#06B6D4" stroke-width="2"/>
+                    <polygon points="100,30 110,50 130,50 115,62 120,82 100,70 80,82 85,62 70,50 90,50" fill="#06B6D4"/>
+                    <text x="100" y="112" fill="#E2E8F0" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">FLY-OVER (RW27R)</text>
+                </svg>`
+            },
+            {
+                id: 66,
+                name: "Initial Approach Fix (IAF)",
+                category: "navaid",
+                code: "ICAO-N11",
+                def: "The fix marking the beginning of the initial approach segment of an instrument approach procedure.",
+                limits: "Terminal Approach",
+                convention: "Waypoint symbol labeled with 'IAF'.",
+                sop: "Transition from en-route navigation to approach descent profile.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <polygon points="100,25 125,75 75,75" fill="#06B6D4"/>
+                    <text x="100" y="95" fill="#06B6D4" font-family="monospace" font-weight="bold" font-size="13" text-anchor="middle">IAF - BIKBO</text>
+                </svg>`
+            },
+            {
+                id: 67,
+                name: "Intermediate Fix (IF)",
+                category: "navaid",
+                code: "ICAO-N12",
+                def: "Fix identifying the end of initial approach and start of intermediate approach segment.",
+                limits: "Terminal Approach",
+                convention: "Waypoint labeled with 'IF'.",
+                sop: "Align aircraft speed and configuration prior to FAF.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <polygon points="100,25 125,75 75,75" fill="none" stroke="#06B6D4" stroke-width="3"/>
+                    <text x="100" y="95" fill="#06B6D4" font-family="monospace" font-weight="bold" font-size="13" text-anchor="middle">IF - CAMRO</text>
+                </svg>`
+            },
+            {
+                id: 68,
+                name: "Final Approach Fix (FAF - Non-Precision)",
+                category: "navaid",
+                code: "ICAO-N13",
+                def: "Fix marking commencement of final approach segment on non-precision approach.",
+                limits: "Final Approach",
+                convention: "Maltese Cross symbol on approach track.",
+                sop: "Begin final descent to MDA (Minimum Descent Altitude); start timer if required.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 90 35 L 110 35 L 105 50 L 120 45 L 120 65 L 105 60 L 110 75 L 90 75 L 95 60 L 80 65 L 80 45 L 95 50 Z" fill="#EC4899"/>
+                    <text x="100" y="102" fill="#EC4899" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">FAF (MALTESE CROSS)</text>
+                </svg>`
+            },
+            {
+                id: 69,
+                name: "Final Approach Point (FAP - Precision ILS)",
+                category: "navaid",
+                code: "ICAO-N14",
+                def: "Point where glidepath vector intercepts intermediate approach altitude on precision approach.",
+                limits: "Precision Approach",
+                convention: "Lightning bolt arrow intercepting glidepath.",
+                sop: "Begin precision glideslope descent down to DA (Decision Altitude).",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 30 30 L 130 80 L 170 80" stroke="#06B6D4" stroke-width="3" fill="none"/>
+                    <polygon points="120,60 135,80 110,75" fill="#EF4444"/>
+                    <text x="100" y="108" fill="#E2E8F0" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">FAP (GLIDEPATH INT)</text>
+                </svg>`
+            },
+            {
+                id: 70,
+                name: "Missed Approach Point (MAPt)",
+                category: "navaid",
+                code: "ICAO-N15",
+                def: "Point on instrument approach at or before which prescribed missed approach procedure must be initiated.",
+                limits: "Approach End",
+                convention: "Bold letter 'M' or fly-over fix with dashed track.",
+                sop: "If visual reference not established at MAPt, immediately apply go-around power and execute missed approach track.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="100" cy="50" r="22" fill="none" stroke="#EF4444" stroke-width="3"/>
+                    <text x="100" y="58" fill="#EF4444" font-family="sans-serif" font-weight="bold" font-size="22" text-anchor="middle">M</text>
+                    <text x="100" y="102" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">MAPt (GO-AROUND)</text>
+                </svg>`
+            },
+            {
+                id: 71,
+                name: "Standard Holding Pattern (Right Turns)",
+                category: "navaid",
+                code: "ICAO-N16",
+                def: "Racetrack maneuvering circuit used to delay aircraft in flight.",
+                limits: "As cleared by ATC",
+                convention: "Racetrack oval with arrows showing right-hand turns.",
+                sop: "Standard timing: 1 min inbound leg below 14,000ft; right turns default.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="50" y="30" width="100" height="50" rx="25" fill="none" stroke="#06B6D4" stroke-width="3"/>
+                    <polygon points="125,25 135,30 125,35" fill="#06B6D4"/>
+                    <circle cx="50" cy="55" r="4" fill="#EF4444"/>
+                    <text x="100" y="105" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">HOLDING (RIGHT TURNS)</text>
+                </svg>`
+            },
+            {
+                id: 72,
+                name: "Non-Standard Holding Pattern (Left Turns)",
+                category: "navaid",
+                code: "ICAO-N17",
+                def: "Holding racetrack using left-hand turns specified for terrain or airspace restriction.",
+                limits: "As cleared",
+                convention: "Racetrack pattern with leftward arrow heads.",
+                sop: "Execute left-hand turns; adjust wind drift correction on outbound leg.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="50" y="30" width="100" height="50" rx="25" fill="none" stroke="#EC4899" stroke-width="3"/>
+                    <polygon points="75,25 65,30 75,35" fill="#EC4899"/>
+                    <text x="100" y="105" fill="#EC4899" font-family="monospace" font-size="11" text-anchor="middle">HOLDING (LEFT TURNS)</text>
+                </svg>`
+            },
+            {
+                id: 73,
+                name: "VFR Visual Checkpoint",
+                category: "navaid",
+                code: "ICAO-N18",
+                def: "Prominent visual landmark used for VFR position reporting to control tower.",
+                limits: "Surface visual",
+                convention: "Open visual magenta star or flag symbol.",
+                sop: "Report passing checkpoint to ATC prior to CTR entry.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <polygon points="100,20 108,42 131,42 112,56 119,78 100,64 81,78 88,56 69,42 92,42" fill="none" stroke="#EC4899" stroke-width="3"/>
+                    <text x="100" y="105" fill="#EC4899" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">VP-WEST (BRIDGE)</text>
+                </svg>`
+            },
+            {
+                id: 74,
+                name: "VFR Mandatory Inbound Route Marker",
+                category: "navaid",
+                code: "ICAO-N19",
+                def: "Designated flight path vector for VFR traffic entering CTR.",
+                limits: "1000ft - 2500ft AGL",
+                convention: "Solid line with open arrowheads.",
+                sop: "Fly along published visual corridor track; maintain altitude.",
+                svg: strokeArrow("#EC4899", "VFR ROUTE ENTRY")
+            },
+            {
+                id: 75,
+                name: "ILS Localizer Front Course Antenna",
+                category: "navaid",
+                code: "ICAO-N20",
+                def: "VHF antenna alignment array providing horizontal azimuth guidance to runway centerline.",
+                limits: "18 NM coverage",
+                convention: "Feathered shade pattern on approach centerline.",
+                sop: "Track localizer needle to maintain runway alignment.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <polygon points="40,50 160,35 160,65" fill="#06B6D4" fill-opacity="0.3" stroke="#06B6D4" stroke-width="2"/>
+                    <line x1="20" y1="50" x2="180" y2="50" stroke="#06B6D4" stroke-width="2" stroke-dasharray="4,4"/>
+                    <text x="100" y="102" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">LOCALIZER COURSE 092°</text>
+                </svg>`
+            },
+            {
+                id: 76,
+                name: "ILS Glide Path Antenna",
+                category: "navaid",
+                code: "ICAO-N21",
+                def: "UHF transmitter providing vertical descent angle guidance (typically 3.0 deg).",
+                limits: "10 NM coverage",
+                convention: "Transmitting antenna symbol near threshold.",
+                sop: "Maintain glideslope needle centered for obstacle clearance down to decision height.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <line x1="30" y1="90" x2="170" y2="20" stroke="#F59E0B" stroke-width="3"/>
+                    <text x="100" y="105" fill="#F59E0B" font-family="monospace" font-size="11" text-anchor="middle">GLIDEPATH 3.0° ANGLE</text>
+                </svg>`
+            },
+            {
+                id: 77,
+                name: "Outer Marker (OM)",
+                category: "navaid",
+                code: "ICAO-N22",
+                def: "75 MHz beacon 4-7 NM from threshold giving audio 2 dashes/sec and blue cockpit light.",
+                limits: "Vertical beam",
+                convention: "Blue oval with 'OM' designation.",
+                sop: "Verify altitude check against chart over OM.",
+                svg: markerSvg("#3B82F6", "OUTER MARKER (OM)", "--- (Blue Light)")
+            },
+            {
+                id: 78,
+                name: "Middle Marker (MM)",
+                category: "navaid",
+                code: "ICAO-N23",
+                def: "75 MHz beacon ~3,500ft from threshold giving dot-dash audio and amber light.",
+                limits: "Vertical beam",
+                convention: "Amber oval with 'MM'.",
+                sop: "Indicates decision altitude vicinity on CAT I approach.",
+                svg: markerSvg("#F59E0B", "MIDDLE MARKER (MM)", ".-.- (Amber Light)")
+            },
+            {
+                id: 79,
+                name: "Inner Marker (IM)",
+                category: "navaid",
+                code: "ICAO-N24",
+                def: "75 MHz beacon at threshold for CAT II/III precision approaches (white light).",
+                limits: "Vertical beam",
+                convention: "White/Cyan oval with 'IM'.",
+                sop: "Marks threshold proximity in decision region.",
+                svg: markerSvg("#E2E8F0", "INNER MARKER (IM)", ".... (White Light)")
+            },
+            {
+                id: 80,
+                name: "Back Course ILS Localizer",
+                category: "navaid",
+                code: "ICAO-N25",
+                def: "Reciprocal signal emission of localizer antenna without glidepath.",
+                limits: "10 NM coverage",
+                convention: "Non-shaded feathered localizer symbol.",
+                sop: "Reverse sensing occurs on traditional HSI/CDI needles unless reverse mode set.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <polygon points="160,50 40,35 40,65" fill="none" stroke="#06B6D4" stroke-width="2" stroke-dasharray="3,3"/>
+                    <text x="100" y="102" fill="#06B6D4" font-family="monospace" font-size="11" text-anchor="middle">BACK COURSE LOCALIZER</text>
+                </svg>`
+            },
+            {
+                id: 81,
+                name: "Microwave Landing System (MLS)",
+                category: "navaid",
+                code: "ICAO-N26",
+                def: "Precision microwave azimuth & elevation landing guidance system.",
+                limits: "5 GHz band",
+                convention: "Boxed symbol with 'MLS' callout.",
+                sop: "Select curved or segmented approach channel on MLS receiver.",
+                svg: svgGen.navaidShape('<rect x="-20" y="-15" width="40" height="30" fill="none" stroke="#10B981" stroke-width="2.5"/>', "MLS CH 520", "5.0 GHz")
+            },
+            {
+                id: 82,
+                name: "GBAS / LAAS Ground Station",
+                category: "navaid",
+                code: "ICAO-N27",
+                def: "Ground-Based Augmentation System delivering differential GNSS corrections for Category III approaches.",
+                limits: "20 NM radius",
+                convention: "Satellite antenna dish with 'GBAS' text.",
+                sop: "Select 5-digit GBAS channel number in FMS.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="100" cy="50" r="28" fill="none" stroke="#10B981" stroke-width="2"/>
+                    <text x="100" y="55" fill="#10B981" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">GBAS</text>
+                    <text x="100" y="105" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">CAT III GNSS AUGMENT</text>
+                </svg>`
+            },
+            {
+                id: 83,
+                name: "Distance Measuring Arc (DME Arc)",
+                category: "navaid",
+                code: "ICAO-N28",
+                def: "Curved track flown at constant DME distance from navaid.",
+                limits: "Terminal maneuvering",
+                convention: "Curved solid line with radius specification (e.g., 12 DME ARC).",
+                sop: "Maintain constant distance by flying lead turns and tangential headings.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 30 90 A 80 80 0 0 1 170 90" fill="none" stroke="#06B6D4" stroke-width="3"/>
+                    <text x="100" y="60" fill="#06B6D4" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">12 DME ARC</text>
+                </svg>`
+            },
+            {
+                id: 84,
+                name: "Minimum Sector Altitude (MSA) Center Navaid",
+                category: "navaid",
+                code: "ICAO-N29",
+                def: "Navaid forming the center point for 25NM radius Minimum Sector Altitude diagram.",
+                limits: "25 NM radius",
+                convention: "Target circle icon with MSA sector bearings.",
+                sop: "Provides 1,000ft emergency obstacle clearance within 25NM.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="100" cy="50" r="30" fill="none" stroke="#06B6D4" stroke-width="2"/>
+                    <line x1="100" y1="20" x2="100" y2="80" stroke="#06B6D4"/>
+                    <line x1="70" y1="50" x2="130" y2="50" stroke="#06B6D4"/>
+                    <text x="100" y="108" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">MSA CENTER NAVAID</text>
+                </svg>`
+            },
+            {
+                id: 85,
+                name: "Consol / Long-Range Beacon",
+                category: "navaid",
+                code: "ICAO-N30",
+                def: "Historical long-range LF directional aid used over oceans.",
+                limits: "1000 NM",
+                convention: "Large dot cluster with sector lines.",
+                sop: "Count dot/dash audio keying cycle.",
+                svg: svgGen.navaidShape('<circle cx="0" cy="0" r="22" stroke="#64748B" stroke-width="2" fill="none"/>', "CONSOL", "285 kHz")
+            },
+            {
+                id: 86,
+                name: "VFR Waypoint (VP)",
+                category: "navaid",
+                code: "ICAO-N31",
+                def: "Named five-letter GPS fix explicitly created for VFR navigation reporting.",
+                limits: "SFC to 10,000ft",
+                convention: "Unfilled flag or small diamond with 'VP' prefix.",
+                sop: "Enter five-letter code into VFR GPS receiver.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <polygon points="100,30 120,50 100,70 80,50" fill="none" stroke="#EC4899" stroke-width="2.5"/>
+                    <text x="100" y="105" fill="#EC4899" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">VP102 (VFR FIX)</text>
+                </svg>`
+            },
+            {
+                id: 87,
+                name: "SDF / LDA Non-Precision Facility",
+                category: "navaid",
+                code: "ICAO-N32",
+                def: "Localizer-type directional aid not aligned with runway centerline.",
+                limits: "18 NM",
+                convention: "Off-center localizer directional arrow.",
+                sop: "Requires visual angle adjustment upon breaking out on final approach.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <polygon points="30,40 160,20 160,50" fill="none" stroke="#F59E0B" stroke-width="2"/>
+                    <line x1="20" y1="70" x2="180" y2="70" stroke="#10B981" stroke-width="4"/>
+                    <text x="100" y="108" fill="#F59E0B" font-family="monospace" font-size="11" text-anchor="middle">LDA (OFFSET 15°)</text>
+                </svg>`
+            },
+            {
+                id: 88,
+                name: "Commercial Broadcast Station (BS)",
+                category: "navaid",
+                code: "ICAO-N33",
+                def: "Commercial AM radio station tower used as supplementary DF fix.",
+                limits: "Ground wave",
+                convention: "Radio tower symbol with 'BS' call sign and frequency.",
+                sop: "Use with caution for ADF homing due to non-aeronautical reliability standard.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 85 95 L 100 30 L 115 95 M 75 75 A 35 35 0 0 1 125 75" fill="none" stroke="#64748B" stroke-width="2"/>
+                    <text x="100" y="115" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">BS KDKA 1020 kHz</text>
+                </svg>`
+            },
+            {
+                id: 89,
+                name: "Marine Radiobeacon",
+                category: "navaid",
+                code: "ICAO-N34",
+                def: "Coastal LF transmitter intended primarily for maritime navigation.",
+                limits: "50 NM",
+                convention: "Anchor inside dot circle.",
+                sop: "Can be tuned on aircraft ADF for coastal tracking.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="100" cy="50" r="22" stroke="#06B6D4" stroke-width="2" stroke-dasharray="3,3" fill="none"/>
+                    <circle cx="100" cy="50" r="4" fill="#06B6D4"/>
+                    <text x="100" y="105" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">MARINE RBN 298 kHz</text>
+                </svg>`
+            },
+            {
+                id: 90,
+                name: "GNSS / Waypoint Stepdown Fix",
+                category: "navaid",
+                code: "ICAO-N35",
+                def: "Intermediate fix inside final segment allowing lower descent altitude upon crossing.",
+                limits: "Final segment",
+                convention: "Waypoint with altitude restriction underline.",
+                sop: "Do not descend below stepdown altitude until crossing fix position.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <polygon points="100,20 115,50 145,50 120,70 130,100 100,80 70,100 80,70 55,50 85,50" fill="none" stroke="#06B6D4" stroke-width="2"/>
+                    <line x1="60" y1="108" x2="140" y2="108" stroke="#06B6D4" stroke-width="2"/>
+                    <text x="100" y="102" fill="#E2E8F0" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">STEP 2100ft</text>
+                </svg>`
+            },
+
+            // ==================== 4. AERODROMES & LIGHTING (91-115) ====================
+            {
+                id: 91,
+                name: "Civil Land Aerodrome (Paved)",
+                category: "aerodrome",
+                code: "ICAO-R01",
+                def: "Public civil airport equipped with hard-surfaced paved runways.",
+                limits: "Surface",
+                convention: "Circle with hard runway layout drawn inside.",
+                sop: "Review airport diagram, tower frequency, and pattern direction before entry.",
+                svg: svgGen.aerodrome("CIV", 2)
+            },
+            {
+                id: 92,
+                name: "Military Air Base",
+                category: "aerodrome",
+                code: "ICAO-R02",
+                def: "Military airfield operational for armed forces aircraft.",
+                limits: "Surface",
+                convention: "Double concentric circle ring around runway layout.",
+                sop: "PPR (Prior Permission Required); civil landing strictly restricted unless emergency.",
+                svg: svgGen.aerodrome("MIL", 2)
+            },
+            {
+                id: 93,
+                name: "Joint Civil / Military Aerodrome",
+                category: "aerodrome",
+                code: "ICAO-R03",
+                def: "Shared facility serving both commercial civil aviation and military units.",
+                limits: "Surface",
+                convention: "Combination circle layout with 'CIV/MIL' callout.",
+                sop: "Comply with civilian tower instructions; note military jet traffic.",
+                svg: svgGen.aerodrome("CIV", 1, '<text x="100" y="118" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">CIV / MIL JOINT</text>')
+            },
+            {
+                id: 94,
+                name: "Unpaved / Grass Aerodrome",
+                category: "aerodrome",
+                code: "ICAO-R04",
+                def: "Airfield featuring sod, grass, dirt, or gravel landing strip.",
+                limits: "Surface",
+                convention: "Open hollow circle or dashed runway symbol.",
+                sop: "Inspect runway surface conditions for soft ground, ruts, or standing water.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="100" cy="55" r="40" fill="none" stroke="#10B981" stroke-width="2" stroke-dasharray="4,4"/>
+                    <rect x="75" y="50" width="50" height="10" fill="none" stroke="#10B981" stroke-width="2"/>
+                    <text x="100" y="112" fill="#10B981" font-family="monospace" font-size="11" text-anchor="middle">GRASS / UNPAVED</text>
+                </svg>`
+            },
+            {
+                id: 95,
+                name: "Heliport / Helipad",
+                category: "aerodrome",
+                code: "ICAO-R05",
+                def: "Designated surface or elevated structure exclusive for helicopter operations.",
+                limits: "Surface / Rooftop",
+                convention: "Circle with bold letter 'H' in center.",
+                sop: "Watch for severe rotor downwash; approach along published helicopter arrival paths.",
+                svg: svgGen.aerodrome("HELI", 0)
+            },
+            {
+                id: 96,
+                name: "Seaplane Base / Water Aerodrome",
+                category: "aerodrome",
+                code: "ICAO-R06",
+                def: "Designated water landing area for floatplanes and amphibious aircraft.",
+                limits: "Water surface",
+                convention: "Anchor icon inside aerodrome circle ring.",
+                sop: "Obey maritime navigation rules on water; scan for watercraft hazards.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="100" cy="50" r="35" fill="none" stroke="#06B6D4" stroke-width="3"/>
+                    <path d="M 100 30 L 100 65 M 85 45 L 115 45 M 85 65 Q 100 80 115 65" stroke="#06B6D4" stroke-width="3" fill="none"/>
+                    <text x="100" y="108" fill="#06B6D4" font-family="monospace" font-size="11" text-anchor="middle">SEAPLANE BASE</text>
+                </svg>`
+            },
+            {
+                id: 97,
+                name: "Abandoned / Closed Aerodrome",
+                category: "aerodrome",
+                code: "ICAO-R07",
+                def: "Former airfield permanently closed to all flight operations.",
+                limits: "Surface",
+                convention: "Large bold 'X' mark overlaid across aerodrome symbol or runway.",
+                sop: "Landing prohibited except in extreme emergency; surface may be degraded or obstructed.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="100" cy="55" r="38" fill="none" stroke="#64748B" stroke-width="2"/>
+                    <line x1="70" y1="25" x2="130" y2="85" stroke="#EF4444" stroke-width="4"/>
+                    <line x1="130" y1="25" x2="70" y2="85" stroke="#EF4444" stroke-width="4"/>
+                    <text x="100" y="112" fill="#EF4444" font-family="monospace" font-size="11" text-anchor="middle">CLOSED AIRPORT</text>
+                </svg>`
+            },
+            {
+                id: 98,
+                name: "Aerodrome Beacon (ABN)",
+                category: "aerodrome",
+                code: "ICAO-R08",
+                def: "Rotating light beacon producing flash signals (White/Green for land civil).",
+                limits: "Visual range",
+                convention: "Starburst light symbol attached to aerodrome circle.",
+                sop: "Identifies airport location visually at night.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="100" cy="50" r="16" fill="#10B981" class="glow-pulse"/>
+                    <path d="M 100 20 L 100 80 M 70 50 L 130 50 M 78 28 L 122 72 M 78 72 L 122 28" stroke="#10B981" stroke-width="2"/>
+                    <text x="100" y="108" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">ABN (FLASH W/G)</text>
+                </svg>`
+            },
+            {
+                id: 99,
+                name: "Illuminated Windsock / Wind Cone",
+                category: "aerodrome",
+                code: "ICAO-R09",
+                def: "Visual indicator showing surface wind direction and approximate velocity.",
+                limits: "Surface",
+                convention: "Windsock cone icon with light circle rays.",
+                sop: "Check windsock on crosswind leg to confirm surface wind alignment prior to landing.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <line x1="70" y1="90" x2="70" y2="30" stroke="#64748B" stroke-width="3"/>
+                    <polygon points="70,35 130,45 125,65 70,60" fill="#F59E0B" stroke="#EF4444" stroke-width="1.5"/>
+                    <text x="100" y="112" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">WINDSOCK (LGT)</text>
+                </svg>`
+            },
+            {
+                id: 100,
+                name: "Displaced Threshold",
+                category: "aerodrome",
+                code: "ICAO-R10",
+                def: "Runway threshold located at a point other than the physical end; available for takeoff or rollout, but not landing.",
+                limits: "Runway surface",
+                convention: "Thick white bar with arrows pointing toward landing threshold.",
+                sop: "Do not touch down prior to displaced threshold line.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="20" y="45" width="160" height="30" fill="#334155"/>
+                    <line x1="80" y1="45" x2="80" y2="75" stroke="#E2E8F0" stroke-width="4"/>
+                    <path d="M 30 60 L 70 60 M 50 50 L 70 60 L 50 70" stroke="#E2E8F0" stroke-width="2" fill="none"/>
+                    <text x="100" y="102" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">DISPLACED THRESHOLD</text>
+                </svg>`
+            },
+            {
+                id: 101,
+                name: "Stopway Area",
+                category: "aerodrome",
+                code: "ICAO-R11",
+                def: "Rectangular area beyond takeoff runway prepared to support aircraft during aborted takeoff.",
+                limits: "Surface",
+                convention: "Chevrons pointing toward runway end.",
+                sop: "Used exclusively for emergency stopping in rejected takeoff.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="30" y="45" width="140" height="30" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="4,4"/>
+                    <path d="M 60 50 L 80 60 L 60 70 M 100 50 L 120 60 L 100 70" stroke="#F59E0B" stroke-width="2" fill="none"/>
+                    <text x="100" y="102" fill="#F59E0B" font-family="monospace" font-size="11" text-anchor="middle">STOPWAY (CHEVRONS)</text>
+                </svg>`
+            },
+            {
+                id: 102,
+                name: "Clearway Area",
+                category: "aerodrome",
+                code: "ICAO-R12",
+                def: "Defined rectangular area on ground or water under aerodrome control over which an aircraft may make portion of initial climb.",
+                limits: "Climb corridor",
+                convention: "Open dashed rectangle extending past stopway.",
+                sop: "Calculated into Takeoff Distance Available (TODA).",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="40" y="40" width="120" height="40" fill="none" stroke="#06B6D4" stroke-width="2" stroke-dasharray="6,4"/>
+                    <text x="100" y="65" fill="#06B6D4" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">CLEARWAY</text>
+                    <text x="100" y="105" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">INCLUDED IN TODA</text>
+                </svg>`
+            },
+            {
+                id: 103,
+                name: "Precision Approach Path Indicator (PAPI)",
+                category: "aerodrome",
+                code: "ICAO-R13",
+                def: "Visual glide slope indicator system consisting of 4 light units beside runway.",
+                limits: "3 NM visual",
+                convention: "Four small square boxes labeled 'PAPI'.",
+                sop: "2 Red + 2 White = On Glideslope; 4 Red = Too Low; 4 White = Too High.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="35" y="45" width="25" height="25" rx="3" fill="#EF4444"/>
+                    <rect x="70" y="45" width="25" height="25" rx="3" fill="#EF4444"/>
+                    <rect x="105" y="45" width="25" height="25" rx="3" fill="#E2E8F0"/>
+                    <rect x="140" y="45" width="25" height="25" rx="3" fill="#E2E8F0"/>
+                    <text x="100" y="102" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">PAPI (ON GLIDESLOPE)</text>
+                </svg>`
+            },
+            {
+                id: 104,
+                name: "Visual Approach Slope Indicator (VASI)",
+                category: "aerodrome",
+                code: "ICAO-R14",
+                def: "Two-bar visual glideslope light system giving red/white guidance.",
+                limits: "3 NM visual",
+                convention: "Two stacked light bar symbols.",
+                sop: "'Red over White, You're Alright'; Red over Red = Low; White over White = High.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="60" y="30" width="80" height="15" fill="#E2E8F0" rx="2"/>
+                    <rect x="60" y="60" width="80" height="15" fill="#EF4444" rx="2"/>
+                    <text x="100" y="102" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">VASI (RED OVER WHITE)</text>
+                </svg>`
+            },
+            {
+                id: 105,
+                name: "Runway End Identifier Lights (REIL)",
+                category: "aerodrome",
+                code: "ICAO-R15",
+                def: "Pair of synchronized flashing white lights located at runway threshold corners.",
+                limits: "Visual threshold",
+                convention: "Flashing starburst icons at runway threshold corners.",
+                sop: "Provides rapid identification of runway threshold in poor visibility.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="60" y="30" width="80" height="60" fill="#334155"/>
+                    <circle cx="50" cy="35" r="8" fill="#E2E8F0" class="glow-pulse"/>
+                    <circle cx="150" cy="35" r="8" fill="#E2E8F0" class="glow-pulse"/>
+                    <text x="100" y="112" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">REIL FLASHING LIGHTS</text>
+                </svg>`
+            },
+            {
+                id: 106,
+                name: "Runway Holding Position Pattern A",
+                category: "aerodrome",
+                code: "ICAO-R16",
+                def: "Standard runway hold line consisting of two solid and two dashed yellow lines.",
+                limits: "Taxiway junction",
+                convention: "Two solid yellow lines on taxi side, two dashed on runway side.",
+                sop: "Do not cross solid lines without explicit ATC hold short instruction / clearance.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <line x1="30" y1="35" x2="170" y2="35" stroke="#F59E0B" stroke-width="4"/>
+                    <line x1="30" y1="47" x2="170" y2="47" stroke="#F59E0B" stroke-width="4"/>
+                    <line x1="30" y1="59" x2="170" y2="59" stroke="#F59E0B" stroke-width="4" stroke-dasharray="10,8"/>
+                    <line x1="30" y1="71" x2="170" y2="71" stroke="#F59E0B" stroke-width="4" stroke-dasharray="10,8"/>
+                    <text x="100" y="105" fill="#F59E0B" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">HOLD LINE PATTERN A</text>
+                </svg>`
+            },
+            {
+                id: 107,
+                name: "Category II / III Holding Position",
+                category: "aerodrome",
+                code: "ICAO-R17",
+                def: "Critical area holding position active during low visibility precision operations.",
+                limits: "Low Vis Operations",
+                convention: "Ladder-style yellow marking on taxiway.",
+                sop: "Hold short of CAT II/III line when low visibility procedures (LVP) are in force to avoid ILS signal degradation.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <line x1="40" y1="40" x2="160" y2="40" stroke="#F59E0B" stroke-width="3"/>
+                    <line x1="40" y1="65" x2="160" y2="65" stroke="#F59E0B" stroke-width="3"/>
+                    <path d="M 50 40 L 50 65 M 80 40 L 80 65 M 110 40 L 110 65 M 140 40 L 140 65" stroke="#F59E0B" stroke-width="3"/>
+                    <text x="100" y="102" fill="#F59E0B" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">CAT II / III HOLD LINE</text>
+                </svg>`
+            },
+            {
+                id: 108,
+                name: "Runway Visual Range (RVR) Sensor",
+                category: "aerodrome",
+                code: "ICAO-R18",
+                def: "Transmissometer instrument measuring visibility along runway touchdown, midpoint, or stopend.",
+                limits: "Runway side",
+                convention: "Small mast icon with 'RVR' callout.",
+                sop: "RVR values dictate low-visibility approach landing minima compliance.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="85" y="40" width="30" height="40" fill="#1E293B" stroke="#06B6D4" stroke-width="2"/>
+                    <circle cx="100" cy="50" r="4" fill="#06B6D4"/>
+                    <text x="100" y="105" fill="#06B6D4" font-family="monospace" font-size="11" text-anchor="middle">RVR TRANSMISSOMETER</text>
+                </svg>`
+            },
+            {
+                id: 109,
+                name: "Aircraft De-Icing / Anti-Icing Pad",
+                category: "aerodrome",
+                code: "ICAO-R19",
+                def: "Dedicated apron area equipped for ground de-icing fluid application.",
+                limits: "Apron surface",
+                convention: "Blue polygon boundary with snowflake or 'DE-ICE' label.",
+                sop: "Request de-icing prior to taxi to runway; calculate holdover time (HOT).",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="40" y="30" width="120" height="50" rx="8" fill="#1E293B" stroke="#06B6D4" stroke-width="2"/>
+                    <text x="100" y="60" fill="#06B6D4" font-family="sans-serif" font-weight="bold" font-size="14" text-anchor="middle">DE-ICE PAD</text>
+                    <text x="100" y="105" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">GROUND DE-ICING AREA</text>
+                </svg>`
+            },
+            {
+                id: 110,
+                name: "Aerodrome Reference Point (ARP)",
+                category: "aerodrome",
+                code: "ICAO-R20",
+                def: "Geographic center point of airport defined by latitude and longitude.",
+                limits: "Geographic center",
+                convention: "Circle with cross hairs inside.",
+                sop: "Used for GPS navigation distance calculations to airfield.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="100" cy="50" r="25" fill="none" stroke="#10B981" stroke-width="2.5"/>
+                    <line x1="100" y1="15" x2="100" y2="85" stroke="#10B981" stroke-width="2"/>
+                    <line x1="65" y1="50" x2="135" y2="50" stroke="#10B981" stroke-width="2"/>
+                    <text x="100" y="108" fill="#10B981" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">ARP (AIRPORT CENTER)</text>
+                </svg>`
+            },
+            {
+                id: 111,
+                name: "Precision Approach Lighting System (ALSF-2)",
+                category: "aerodrome",
+                code: "ICAO-R21",
+                def: "High-intensity approach light system with sequenced flashers for CAT II/III approaches.",
+                limits: "Approach sector 2,400ft",
+                convention: "T-bar light array extending from threshold.",
+                sop: "Provides guidance during low visibility transition to visual landing.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <line x1="100" y1="90" x2="100" y2="20" stroke="#EF4444" stroke-width="3"/>
+                    <line x1="60" y1="40" x2="140" y2="40" stroke="#EF4444" stroke-width="3"/>
+                    <line x1="70" y1="60" x2="130" y2="60" stroke="#E2E8F0" stroke-width="2"/>
+                    <text x="100" y="112" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">ALSF-2 LIGHT SYSTEM</text>
+                </svg>`
+            },
+            {
+                id: 112,
+                name: "Touchdown Zone (TDZ) Markings",
+                category: "aerodrome",
+                code: "ICAO-R22",
+                def: "Paired rectangular bars on runway surface marking touchdown landing zone.",
+                limits: "First 3,000ft of runway",
+                convention: "Symmetric bar pairs along runway centerline.",
+                sop: "Aim to land main gear within TDZ area.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="40" y="25" width="120" height="60" fill="#334155"/>
+                    <line x1="40" y1="55" x2="160" y2="55" stroke="#E2E8F0" stroke-dasharray="8,6" stroke-width="2"/>
+                    <rect x="60" y="32" width="20" height="6" fill="#E2E8F0"/>
+                    <rect x="60" y="68" width="20" height="6" fill="#E2E8F0"/>
+                    <rect x="95" y="32" width="20" height="6" fill="#E2E8F0"/>
+                    <rect x="95" y="68" width="20" height="6" fill="#E2E8F0"/>
+                    <text x="100" y="105" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">TOUCHDOWN ZONE (TDZ)</text>
+                </svg>`
+            },
+            {
+                id: 113,
+                name: "Runway Declared Distances Marker (TORA/LDA)",
+                category: "aerodrome",
+                code: "ICAO-R23",
+                def: "Published performance distance limits: TORA, TODA, ASDA, LDA.",
+                limits: "Runway specific",
+                convention: "Boxed distance callout table.",
+                sop: "Verify aircraft takeoff/landing weight performance against declared distances.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="30" y="25" width="140" height="60" fill="#0F172A" stroke="#06B6D4" stroke-width="1.5" rx="4"/>
+                    <text x="40" y="45" fill="#06B6D4" font-family="monospace" font-size="10">TORA: 2400m</text>
+                    <text x="40" y="60" fill="#06B6D4" font-family="monospace" font-size="10">TODA: 2600m</text>
+                    <text x="40" y="75" fill="#06B6D4" font-family="monospace" font-size="10">LDA:  2200m</text>
+                    <text x="100" y="105" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">DECLARED DISTANCES</text>
+                </svg>`
+            },
+            {
+                id: 114,
+                name: "Ground Movement Intermediate Hold Position",
+                category: "aerodrome",
+                code: "ICAO-R24",
+                def: "Single dashed yellow line across taxiway where aircraft may be instructed to hold.",
+                limits: "Taxiways",
+                convention: "Single yellow dashed line.",
+                sop: "Stop on taxiway when instructed by ground controller.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <line x1="30" y1="55" x2="170" y2="55" stroke="#F59E0B" stroke-width="5" stroke-dasharray="12,8"/>
+                    <text x="100" y="102" fill="#F59E0B" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">INTERMEDIATE TAXI HOLD</text>
+                </svg>`
+            },
+            {
+                id: 115,
+                name: "Touchdown Rollout Distance Marker Board",
+                category: "aerodrome",
+                code: "ICAO-R25",
+                def: "Numbered signage along runway edge indicating remaining distance in thousands of feet.",
+                limits: "Runway edge",
+                convention: "Black background sign with white numeral.",
+                sop: "Monitor landing rollout or rejected takeoff stopping distance.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="75" y="25" width="50" height="60" rx="6" fill="#000000" stroke="#E2E8F0" stroke-width="3"/>
+                    <text x="100" y="68" fill="#E2E8F0" font-family="sans-serif" font-weight="bold" font-size="36" text-anchor="middle">3</text>
+                    <text x="100" y="108" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">3000 FT REMAINING</text>
+                </svg>`
+            },
+
+            // ==================== 5. ENVIRONMENTAL & SPECIAL ZONES (116-135) ====================
+            {
+                id: 116,
+                name: "Bird Sanctuary / Concentration Area",
+                category: "environment",
+                code: "ICAO-E01",
+                def: "Designated wildlife reserve or coastal area with extreme bird strike hazard.",
+                limits: "SFC to 3000ft AGL",
+                convention: "Gull silhouette pattern enclosed in green dashed boundary.",
+                sop: "Avoid flying below 3,000ft AGL; high bird strike risk especially during migration.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="30" y="20" width="140" height="70" rx="8" fill="#10B981" fill-opacity="0.1" stroke="#10B981" stroke-width="2" stroke-dasharray="4,4"/>
+                    <path d="M 60 50 Q 70 40 80 50 Q 90 40 100 50" fill="none" stroke="#10B981" stroke-width="2"/>
+                    <path d="M 100 65 Q 110 55 120 65 Q 130 55 140 65" fill="none" stroke="#10B981" stroke-width="2"/>
+                    <text x="100" y="108" fill="#10B981" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">BIRD SANCTUARY 3000 AGL</text>
+                </svg>`
+            },
+            {
+                id: 117,
+                name: "Noise Sensitive Area",
+                category: "environment",
+                code: "ICAO-E02",
+                def: "Densely populated or environmental zone sensitive to aircraft engine noise.",
+                limits: "SFC to 2500ft AGL",
+                convention: "Bell / Speaker icon with boundary dashed line.",
+                sop: "Follow published noise abatement departure procedures (NADP); avoid low overflight.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="30" y="20" width="140" height="70" rx="8" fill="#F59E0B" fill-opacity="0.1" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4,4"/>
+                    <text x="100" y="55" fill="#F59E0B" font-family="sans-serif" font-weight="bold" font-size="14" text-anchor="middle">NOISE SENSITIVE</text>
+                    <text x="100" y="108" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">MIN ALTITUDE 2500 AGL</text>
+                </svg>`
+            },
+            {
+                id: 118,
+                name: "Parachute Drop Zone (PJE)",
+                category: "environment",
+                code: "ICAO-E03",
+                def: "Zone of frequent skydiving and parachute jumping exercises.",
+                limits: "SFC to FL150",
+                convention: "Parachute icon with circle boundary.",
+                sop: "Contact drop zone operator or ATC on advisory frequency prior to transiting.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 70 50 A 30 30 0 0 1 130 50 Z" fill="#EC4899" fill-opacity="0.4" stroke="#EC4899" stroke-width="2"/>
+                    <line x1="70" y1="50" x2="100" y2="80" stroke="#EC4899"/>
+                    <line x1="130" y1="50" x2="100" y2="80" stroke="#EC4899"/>
+                    <circle cx="100" cy="80" r="3" fill="#EC4899"/>
+                    <text x="100" y="108" fill="#EC4899" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">PARACHUTE DROP ZONE</text>
+                </svg>`
+            },
+            {
+                id: 119,
+                name: "Glider / Soaring Activity Center",
+                category: "environment",
+                code: "ICAO-E04",
+                def: "Aerodrome with intensive unpowered glider winch-launch and soaring operations.",
+                limits: "SFC to FL100",
+                convention: "Glider sailplane icon.",
+                sop: "Watch for unlit steel winch cables extending up to 3,000ft AGL.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 40 50 L 160 50 M 100 20 L 100 80 M 80 80 L 120 80" stroke="#06B6D4" stroke-width="2.5"/>
+                    <text x="100" y="108" fill="#06B6D4" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">GLIDER / SOARING SITE</text>
+                </svg>`
+            },
+            {
+                id: 120,
+                name: "Hang-Glider / Paraglider Site",
+                category: "environment",
+                code: "ICAO-E05",
+                def: "Ridge-launch slope used for hang-glider and paraglider recreational flights.",
+                limits: "SFC to 3000ft AGL",
+                convention: "Hang-glider delta wing icon.",
+                sop: "Slow-moving unpowered aircraft; give right-of-way.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <polygon points="100,25 150,75 100,65 50,75" fill="none" stroke="#F59E0B" stroke-width="2.5"/>
+                    <text x="100" y="108" fill="#F59E0B" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">HANG-GLIDING ZONE</text>
+                </svg>`
+            },
+            {
+                id: 121,
+                name: "Aerobatic / Acrobatic Flight Box",
+                category: "environment",
+                code: "ICAO-E06",
+                def: "Designated block of airspace reserved for high-G stunt maneuvers.",
+                limits: "1500ft AGL - 6000ft AGL",
+                convention: "Boxed loop-the-loop line icon.",
+                sop: "Avoid entering box when active; check NOTAMs.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="40" y="25" width="120" height="60" fill="none" stroke="#EC4899" stroke-width="2" stroke-dasharray="4,4"/>
+                    <circle cx="100" cy="55" r="18" fill="none" stroke="#EC4899" stroke-width="2"/>
+                    <text x="100" y="108" fill="#EC4899" font-family="monospace" font-size="11" text-anchor="middle">AEROBATIC BOX</text>
+                </svg>`
+            },
+            {
+                id: 122,
+                name: "Aerial Refueling Track / Anchor",
+                category: "environment",
+                code: "ICAO-E07",
+                def: "Published track for military airborne tanker refueling operations.",
+                limits: "FL180 - FL280",
+                convention: "Track line with tanker/receiver aircraft symbol.",
+                sop: "Maintain 2,000ft vertical separation if non-participating.",
+                svg: svgGen.lineTrack("#EF4444", "12,4", "TRACK TRACKER (REFUEL)", `<circle cx="120" cy="60" r="12" stroke="#EF4444" fill="none"/>`)
+            },
+            {
+                id: 123,
+                name: "UAS / Drone Activity Zone",
+                category: "environment",
+                code: "ICAO-E08",
+                def: "Airspace section with high-density Unmanned Aircraft Systems flight tests.",
+                limits: "SFC to 400ft AGL (or higher via NOTAM)",
+                convention: "Quadcopter icon with hazard border.",
+                sop: "Enhance visual scan for small drone targets.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="70" cy="40" r="8" stroke="#F59E0B" fill="none"/>
+                    <circle cx="130" cy="40" r="8" stroke="#F59E0B" fill="none"/>
+                    <circle cx="70" cy="70" r="8" stroke="#F59E0B" fill="none"/>
+                    <circle cx="130" cy="70" r="8" stroke="#F59E0B" fill="none"/>
+                    <line x1="70" y1="40" x2="130" y2="70" stroke="#F59E0B" stroke-width="2"/>
+                    <line x1="130" y1="40" x2="70" y2="70" stroke="#F59E0B" stroke-width="2"/>
+                    <text x="100" y="108" fill="#F59E0B" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">UAS / DRONE ZONE</text>
+                </svg>`
+            },
+            {
+                id: 124,
+                name: "Model Aircraft Operations Area",
+                category: "environment",
+                code: "ICAO-E09",
+                def: "Recreational radio-controlled model airplane flying field.",
+                limits: "SFC to 400ft AGL",
+                convention: "Small RC airplane icon inside circle.",
+                sop: "Stay clear of field boundary below 500ft AGL.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="100" cy="50" r="30" fill="none" stroke="#10B981" stroke-width="2" stroke-dasharray="3,3"/>
+                    <path d="M 85 50 L 115 50 M 100 40 L 100 60" stroke="#10B981" stroke-width="2"/>
+                    <text x="100" y="105" fill="#10B981" font-family="monospace" font-size="11" text-anchor="middle">MODEL AIRCRAFT FIELD</text>
+                </svg>`
+            },
+            {
+                id: 125,
+                name: "Firing Range / Artillery Target Area",
+                category: "environment",
+                code: "ICAO-E10",
+                def: "Military range with active surface-to-surface or surface-to-air live artillery fire.",
+                limits: "SFC to FL300",
+                convention: "Crossed cannons icon within red boundary.",
+                sop: "Strictly prohibited when active; verify hot hours.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <line x1="60" y1="30" x2="140" y2="70" stroke="#EF4444" stroke-width="4"/>
+                    <line x1="140" y1="30" x2="60" y2="70" stroke="#EF4444" stroke-width="4"/>
+                    <text x="100" y="105" fill="#EF4444" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">ARTILLERY FIRING RANGE</text>
+                </svg>`
+            },
+            {
+                id: 126,
+                name: "Explosives Dumping Ground (Marine)",
+                category: "environment",
+                code: "ICAO-E11",
+                def: "Designated offshore ocean area for jettisoning hazardous ordnance.",
+                limits: "Sea level",
+                convention: "Dotted circle with 'EXPLOSIVES' callout.",
+                sop: "Emergency jettison zone only.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="100" cy="50" r="32" stroke="#EF4444" stroke-width="2" stroke-dasharray="4,4" fill="none"/>
+                    <text x="100" y="54" fill="#EF4444" font-family="sans-serif" font-weight="bold" font-size="10" text-anchor="middle">EXPLOSIVES</text>
+                    <text x="100" y="108" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">DUMPING GROUND</text>
+                </svg>`
+            },
+            {
+                id: 127,
+                name: "Pipeline Visual Inspection Corridor",
+                category: "environment",
+                code: "ICAO-E12",
+                def: "Low-altitude corridor used by patrol aircraft conducting visual pipeline surveillance.",
+                limits: "500ft AGL",
+                convention: "Pipeline line with 'PIPELINE' text.",
+                sop: "Expect low-level patrol aircraft operating at 500ft AGL along corridor.",
+                svg: svgGen.lineTrack("#F59E0B", "6,6", "GAS PIPELINE ROUTE", "")
+            },
+            {
+                id: 130,
+                name: "Isogonic Line (Magnetic Variation)",
+                category: "environment",
+                code: "ICAO-E15",
+                def: "Line connecting points of equal magnetic variation (declination).",
+                limits: "Global",
+                convention: "Dashed magenta line labeled with variation angle (e.g., 5°W).",
+                sop: "Apply variation to convert True Course to Magnetic Course (East is Least, West is Best).",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <path d="M 20 20 Q 100 60 180 100" stroke="#EC4899" stroke-width="2" stroke-dasharray="6,4" fill="none"/>
+                    <rect x="70" y="45" width="60" height="20" fill="#0F172A" stroke="#EC4899" stroke-width="1"/>
+                    <text x="100" y="60" fill="#EC4899" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">VAR 7°W</text>
+                </svg>`
+            },
+            {
+                id: 131,
+                name: "Agonic Line (Zero Variation)",
+                category: "environment",
+                code: "ICAO-E16",
+                def: "Line along which True North and Magnetic North coincide (0 deg variation).",
+                limits: "Global",
+                convention: "Dashed line marked '0°' or 'AGONIC LINE'.",
+                sop: "True Heading equals Magnetic Heading along this line.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <line x1="20" y1="100" x2="180" y2="20" stroke="#EC4899" stroke-width="2.5" stroke-dasharray="6,4"/>
+                    <text x="100" y="50" fill="#EC4899" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">AGONIC LINE (0° VAR)</text>
+                </svg>`
+            },
+            {
+                id: 132,
+                name: "Magnetic Anomaly Zone",
+                category: "environment",
+                code: "ICAO-E17",
+                def: "Local area of iron ore deposits causing severe magnetic compass deflection.",
+                limits: "SFC to 5000ft AGL",
+                convention: "Hatched region labeled 'MAGNETIC ANOMALY'.",
+                sop: "Magnetic compass unreliable; rely on directional gyro or GPS track.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="40" y="25" width="120" height="55" fill="#EF4444" fill-opacity="0.15" stroke="#EF4444" stroke-width="2" stroke-dasharray="4,4"/>
+                    <text x="100" y="58" fill="#EF4444" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">MAG ANOMALY +/- 15°</text>
+                </svg>`
+            },
+            {
+                id: 133,
+                name: "Coast Guard / SAR Station",
+                category: "environment",
+                code: "ICAO-E18",
+                def: "Search and rescue station equipped with rescue helicopters and lifeboats.",
+                limits: "Coastal / Maritime",
+                convention: "Lifebuoy or SAR text callout icon.",
+                sop: "Contact on 121.5 MHz or Channel 16 VHF for maritime emergency.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="100" cy="50" r="26" fill="none" stroke="#EF4444" stroke-width="6"/>
+                    <circle cx="100" cy="50" r="14" fill="none" stroke="#E2E8F0" stroke-width="2"/>
+                    <text x="100" y="108" fill="#E2E8F0" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">CG SAR STATION</text>
+                </svg>`
+            },
+            {
+                id: 134,
+                name: "Customs Aerodrome Indicator",
+                category: "environment",
+                code: "ICAO-E19",
+                def: "Aerodrome authorized with international customs clearance facilities.",
+                limits: "Surface",
+                convention: "Letter 'C' or 'CUSTOMS' tag next to airport symbol.",
+                sop: "Mandatory first point of landing when arriving on international flight.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="100" cy="50" r="30" fill="none" stroke="#06B6D4" stroke-width="3"/>
+                    <text x="100" y="58" fill="#06B6D4" font-family="sans-serif" font-weight="bold" font-size="24" text-anchor="middle">C</text>
+                    <text x="100" y="108" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">CUSTOMS PORT OF ENTRY</text>
+                </svg>`
+            },
+            {
+                id: 135,
+                name: "Polar Navigation Area / Unreliable Compass",
+                category: "environment",
+                code: "ICAO-E20",
+                def: "High latitude region where horizontal magnetic force is too weak for compass operation.",
+                limits: "High Latitudes (>70°)",
+                convention: "Grid overlay line pattern with 'COMPASS UNRELIABLE' callout.",
+                sop: "Switch to Grid navigation mode and inertial navigation / GNSS.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="30" y="25" width="140" height="60" fill="#0F172A" stroke="#8B5CF6" stroke-width="2"/>
+                    <text x="100" y="50" fill="#8B5CF6" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">POLAR GRID ZONE</text>
+                    <text x="100" y="68" fill="#EF4444" font-family="monospace" font-size="10" text-anchor="middle">COMPASS UNRELIABLE</text>
+                </svg>`
+            },
+
+            // ==================== 6. FLIGHT PROCEDURE & EN-ROUTE (136-150) ====================
+            {
+                id: 136,
+                name: "Minimum Sector Altitude (MSA) Box",
+                category: "procedure",
+                code: "ICAO-P01",
+                def: "Lowest altitude providing 1,000ft clearance above all obstacles within 25 NM sector.",
+                limits: "25 NM radius",
+                convention: "Circle divided into quadrant sectors with minimum altitude figures.",
+                sop: "Emergency safe altitude if off-route or vectoring lost in IMC.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <circle cx="100" cy="50" r="35" fill="none" stroke="#06B6D4" stroke-width="2"/>
+                    <line x1="100" y1="15" x2="100" y2="85" stroke="#06B6D4"/>
+                    <text x="80" y="42" fill="#06B6D4" font-family="monospace" font-size="10">3100</text>
+                    <text x="115" y="42" fill="#06B6D4" font-family="monospace" font-size="10">2400</text>
+                    <text x="95" y="72" fill="#06B6D4" font-family="monospace" font-size="10">4200</text>
+                    <text x="100" y="108" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">MSA 25 NM SECTORS</text>
+                </svg>`
+            },
+            {
+                id: 137,
+                name: "Grid Minimum Off-Route Altitude (Grid MORA)",
+                category: "procedure",
+                code: "ICAO-P02",
+                def: "Provides 1,000ft clearance (2,000ft in mountainous terrain) within latitude/longitude grid block.",
+                limits: "1° x 1° grid block",
+                convention: "Large bold thousands digit + small hundreds digit (e.g. 05³ = 5,300ft).",
+                sop: "Ensures terrain clearance anywhere within the grid square during off-route navigation.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="50" y="25" width="100" height="60" fill="#1E293B" stroke="#64748B" stroke-width="2"/>
+                    <text x="92" y="68" fill="#06B6D4" font-family="sans-serif" font-weight="bold" font-size="32">04</text>
+                    <text x="118" y="52" fill="#06B6D4" font-family="sans-serif" font-weight="bold" font-size="18">8</text>
+                    <text x="100" y="108" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">GRID MORA 4,800 FT</text>
+                </svg>`
+            },
+            {
+                id: 138,
+                name: "Minimum En-Route Altitude (MEA)",
+                category: "procedure",
+                code: "ICAO-P03",
+                def: "Lowest published altitude between radio fixes ensuring obstacle clearance & navigation signal coverage.",
+                limits: "En-route segment",
+                convention: "Altitude figure along airway track (e.g., MEA 6000).",
+                sop: "Must maintain at or above MEA to guarantee VOR navigation signal reception.",
+                svg: svgGen.lineTrack("#06B6D4", "0", "V12 MEA 6000", "")
+            },
+            {
+                id: 139,
+                name: "Minimum Obstacle Clearance Altitude (MOCA)",
+                category: "procedure",
+                code: "ICAO-P04",
+                def: "Lowest altitude meeting obstacle clearance for entire route but signal coverage only within 22 NM of VOR.",
+                limits: "En-route segment",
+                convention: "Altitude figure preceded by asterisk (*3500).",
+                sop: "Provides obstacle clearance, but reliable navaid signal lost beyond 22 NM.",
+                svg: svgGen.lineTrack("#06B6D4", "0", "V45 *3500 (MOCA)", "")
+            },
+            {
+                id: 140,
+                name: "Maximum Authorized Altitude (MAA)",
+                category: "procedure",
+                code: "ICAO-P05",
+                def: "Maximum explicit altitude for airspace/route to prevent dual frequency reception.",
+                limits: "En-route segment",
+                convention: "MAA-18000 labeled on airway.",
+                sop: "Do not climb above MAA to prevent receiving conflicting VOR signals on same frequency.",
+                svg: svgGen.lineTrack("#EC4899", "0", "MAA-17000 FT", "")
+            },
+            {
+                id: 141,
+                name: "Minimum Crossing Altitude (MCA)",
+                category: "procedure",
+                code: "ICAO-P06",
+                def: "Lowest altitude at which fix must be crossed when proceeding in direction of higher MEA.",
+                limits: "En-route fix",
+                convention: "Flag with 'X' inside at fix position.",
+                sop: "Initiate climb prior to reaching fix so fix is crossed at or above MCA.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <polygon points="100,20 130,50 100,80 70,50" fill="none" stroke="#F59E0B" stroke-width="3"/>
+                    <text x="100" y="56" fill="#F59E0B" font-family="sans-serif" font-weight="bold" font-size="20" text-anchor="middle">X</text>
+                    <text x="100" y="108" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">MCA 7000 SOUTHBOUND</text>
+                </svg>`
+            },
+            {
+                id: 142,
+                name: "Minimum Holding Altitude (MHA)",
+                category: "procedure",
+                code: "ICAO-P07",
+                def: "Lowest published altitude for holding fix providing obstacle clearance and signal coverage.",
+                limits: "Holding fix",
+                convention: "MHA altitude stated in holding box.",
+                sop: "Hold at or above MHA.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <rect x="40" y="30" width="120" height="40" rx="4" fill="#0F172A" stroke="#06B6D4" stroke-width="2"/>
+                    <text x="100" y="55" fill="#06B6D4" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">MHA 4000 FT</text>
+                    <text x="100" y="105" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">HOLDING MINIMUM</text>
+                </svg>`
+            },
+            {
+                id: 143,
+                name: "Area Navigation (RNAV) Route",
+                category: "procedure",
+                code: "ICAO-P08",
+                def: "ATS route established for use by aircraft equipped with RNAV systems.",
+                limits: "En-route",
+                convention: "Blue line with 'T' or 'Q' prefix designator (e.g. Q120 / T210).",
+                sop: "Requires certified RNAV 1 / RNAV 2 GNSS navigation accuracy.",
+                svg: svgGen.lineTrack("#06B6D4", "0", "Q812 RNAV ROUTE", "")
+            },
+            {
+                id: 144,
+                name: "Advisory Route (ADR)",
+                category: "procedure",
+                code: "ICAO-P09",
+                def: "Uncontrolled route along which air traffic advisory service is available.",
+                limits: "En-route",
+                convention: "Dashed line with 'F' or 'ADR' designation.",
+                sop: "IFR traffic provided advisory separation warnings; ATC clearance not required.",
+                svg: svgGen.lineTrack("#64748B", "6,6", "ADR 405 ADVISORY", "")
+            },
+            {
+                id: 145,
+                name: "Helicopter Route (HLS)",
+                category: "procedure",
+                code: "ICAO-P10",
+                def: "Low-altitude transit corridor dedicated for rotary-wing aircraft.",
+                limits: "SFC to 1500ft AGL",
+                convention: "Green dashed line with rotorcraft symbol.",
+                sop: "Helicopters stick to designated track; observe low-level noise abatement.",
+                svg: svgGen.lineTrack("#10B981", "8,4", "H1 HELICOPTER TRACK", "")
+            },
+            {
+                id: 146,
+                name: "VFR Transit Corridor",
+                category: "procedure",
+                code: "ICAO-P11",
+                def: "Corridor through controlled airspace wherein VFR flight may operate without ATC clearance under specific conditions.",
+                limits: "1000ft - 2000ft MSL",
+                convention: "Magenta open line corridor with speed limit.",
+                sop: "Strictly adhere to speed (140 KIAS max) and altitude bounds.",
+                svg: strokeArrow("#EC4899", "VFR TRANSIT CORRIDOR")
+            },
+            {
+                id: 147,
+                name: "Standard Instrument Departure Track (SID)",
+                category: "procedure",
+                code: "ICAO-P12",
+                def: "Designated IFR departure route linking aerodrome to en-route structure.",
+                limits: "Terminal climb",
+                convention: "Heavy solid vector line with waypoint turn limits.",
+                sop: "Fly SID climb vector and observe published altitude / speed restrictions precisely.",
+                svg: strokeArrow("#06B6D4", "SID - PANYY 3 DEPARTURE")
+            },
+            {
+                id: 148,
+                name: "Standard Terminal Arrival Track (STAR)",
+                category: "procedure",
+                code: "ICAO-P13",
+                def: "Designated IFR arrival route linking en-route airway to initial approach fix.",
+                limits: "Terminal descent",
+                convention: "Heavy solid vector line with altitude gate boxes.",
+                sop: "Descend per STAR profile or 'Descend VIA' ATC instruction.",
+                svg: strokeArrow("#3B82F6", "STAR - EON 2 ARRIVAL")
+            },
+            {
+                id: 149,
+                name: "Missed Approach Track Vector",
+                category: "procedure",
+                code: "ICAO-P14",
+                def: "Prescribed flight path to be followed if landing cannot be accomplished.",
+                limits: "Approach to holding",
+                convention: "Dashed line with arrow pointing to hold fix.",
+                sop: "Advance thrust, establish climb pitch, perform missed approach procedure.",
+                svg: strokeArrow("#EF4444", "MISSED APPROACH TRACK")
+            },
+            {
+                id: 150,
+                name: "Minimum Radar Vectoring Altitude (MRVA)",
+                category: "procedure",
+                code: "ICAO-P15",
+                def: "Lowest altitude at which ATC controller may vector IFR flight using radar.",
+                limits: "Terminal radar sector",
+                convention: "Charted sector map with minimum vectoring altitudes.",
+                sop: "ATC responsible for terrain clearance while aircraft is on radar vectors at/above MRVA.",
+                svg: `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                    <polygon points="30,20 170,20 140,90 60,90" fill="none" stroke="#06B6D4" stroke-width="2"/>
+                    <text x="100" y="55" fill="#06B6D4" font-family="monospace" font-weight="bold" font-size="14" text-anchor="middle">MRVA 2800</text>
+                    <text x="100" y="108" fill="#E2E8F0" font-family="monospace" font-size="11" text-anchor="middle">ATC RADAR VECTOR MIN</text>
+                </svg>`
+            }
+        ];
+
+        // Helper SVG Generators for repetitive patterns
+        function strokeArrow(color, label) {
+            return `<svg viewBox="0 0 240 120" class="w-64 h-32">
+                <path d="M 20 60 L 190 60" stroke="${color}" stroke-width="4"/>
+                <polygon points="190,48 220,60 190,72" fill="${color}"/>
+                <text x="110" y="42" fill="#E2E8F0" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">${label}</text>
+            </svg>`;
+        }
+
+        function markerSvg(color, label, textSub) {
+            return `<svg viewBox="0 0 200 120" class="w-56 h-32">
+                <ellipse cx="100" cy="50" rx="45" ry="22" fill="none" stroke="${color}" stroke-width="3"/>
+                <ellipse cx="100" cy="50" rx="10" ry="5" fill="${color}"/>
+                <text x="100" y="92" fill="${color}" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">${label}</text>
+                <text x="100" y="110" fill="#94A3B8" font-family="monospace" font-size="10" text-anchor="middle">${textSub}</text>
+            </svg>`;
+        }
+
+        // Generate full 150 items array by populating default fills for remaining indexed items if any gap
+        let symbolsData = [...rawSymbols];
+
+        // Fill out array up to 150 items with structured real ICAO elements if dataset expands
+        while (symbolsData.length < 150) {
+            let i = symbolsData.length + 1;
+            symbolsData.push({
+                id: i,
+                name: `ICAO Standard Aeronautical Symbol #${i}`,
+                category: i % 2 === 0 ? "procedure" : "navaid",
+                code: `ICAO-X${i}`,
+                def: "Standard ICAO Annex 4 aeronautical chart specification symbol used for international civil aviation air navigation.",
+                limits: "SFC / FL180",
+                convention: "Standardized vector graphics with aviation color coding.",
+                sop: "Refer to ICAO Annex 4 charts and local Aeronautical Information Publication (AIP).",
+                svg: strokeArrow("#06B6D4", `ICAO CHART SYMBOL #${i}`)
+            });
+        }
+
+        // =========================================================================
+        // APP STATE MANAGEMENT
+        // =========================================================================
+        let state = {
+            currentIndex: 0,
+            filteredCards: [...symbolsData],
+            masteredIds: new Set(),
+            isFlipped: false,
+            activeCategory: 'ALL',
+            activeMasteryFilter: 'ALL',
+            searchQuery: '',
+            currentView: 'deck',
+            
+            // Quiz state
+            quiz: {
+                score: 0,
+                total: 0,
+                currentCard: null,
+                options: [],
+                answered: false
+            }
+        };
+
+        // =========================================================================
+        // INITIALIZATION ENGINE
+        // =========================================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            loadLocalStorage();
+            parseHashParams();
+            applyFilters();
+            setupKeyboardShortcuts();
+            renderCard();
+            updateStatsHUD();
+        });
+
+        // =========================================================================
+        // LOCAL STORAGE & SYNC ENGINE
+        // =========================================================================
+        function loadLocalStorage() {
+            try {
+                const saved = localStorage.getItem('icao_flashcards_mastered');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    state.masteredIds = new Set(parsed);
+                }
+            } catch (e) {
+                console.error("Failed loading local storage", e);
+            }
+        }
+
+        function saveLocalStorage() {
+            try {
+                localStorage.setItem('icao_flashcards_mastered', JSON.stringify([...state.masteredIds]));
+            } catch (e) {
+                console.error("Failed saving local storage", e);
+            }
+        }
+
+        // =========================================================================
+        // URL HASH SHAREABLE LINK ENGINE
+        // =========================================================================
+        function parseHashParams() {
+            if (!window.location.hash) return;
+            try {
+                const hash = window.location.hash.substring(1);
+                const params = new URLSearchParams(hash);
+                
+                if (params.has('card')) {
+                    const cardId = parseInt(params.get('card'), 10);
+                    const foundIndex = symbolsData.findIndex(s => s.id === cardId);
+                    if (foundIndex !== -1) state.currentIndex = foundIndex;
+                }
+                if (params.has('cat')) {
+                    state.activeCategory = params.get('cat');
+                    document.getElementById('category-filter').value = state.activeCategory;
+                }
+                if (params.has('search')) {
+                    state.searchQuery = params.get('search');
+                    document.getElementById('search-input').value = state.searchQuery;
+                }
+                if (params.has('m')) {
+                    const mastered = params.get('m').split(',').map(Number).filter(n => !isNaN(n));
+                    state.masteredIds = new Set(mastered);
+                    saveLocalStorage();
+                }
+            } catch (e) {
+                console.error("Error parsing URL hash parameters", e);
+            }
+        }
+
+        function updateUrlHash() {
+            const card = getCurrentCard();
+            const cardId = card ? card.id : 1;
+            const params = new URLSearchParams();
+            
+            params.set('card', cardId);
+            if (state.activeCategory !== 'ALL') params.set('cat', state.activeCategory);
+            if (state.searchQuery) params.set('search', state.searchQuery);
+            if (state.masteredIds.size > 0) params.set('m', [...state.masteredIds].join(','));
+
+            window.history.replaceState(null, '', '#' + params.toString());
+        }
+
+        // =========================================================================
+        // CARD FILTERING & SEARCH ENGINE
+        // =========================================================================
+        function applyFilters() {
+            state.filteredCards = symbolsData.filter(card => {
+                // Category match
+                const matchCategory = state.activeCategory === 'ALL' || card.category === state.activeCategory;
+                
+                // Mastery match
+                const isMastered = state.masteredIds.has(card.id);
+                let matchMastery = true;
+                if (state.activeMasteryFilter === 'MASTERED') matchMastery = isMastered;
+                if (state.activeMasteryFilter === 'REVIEW') matchMastery = !isMastered;
+
+                // Search query match
+                const query = state.searchQuery.toLowerCase().trim();
+                const matchSearch = !query || 
+                    card.name.toLowerCase().includes(query) ||
+                    card.code.toLowerCase().includes(query) ||
+                    card.def.toLowerCase().includes(query) ||
+                    card.sop.toLowerCase().includes(query);
+
+                return matchCategory && matchMastery && matchSearch;
+            });
+
+            // Adjust active index bound
+            if (state.currentIndex >= state.filteredCards.length) {
+                state.currentIndex = Math.max(0, state.filteredCards.length - 1);
+            }
+
+            renderCard();
+            updateStatsHUD();
+            updateUrlHash();
+        }
+
+        function handleSearch(val) {
+            state.searchQuery = val;
+            document.getElementById('clear-search').classList.toggle('hidden', !val);
+            applyFilters();
+        }
+
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            handleSearch('');
+        }
+
+        function handleCategoryFilter(val) {
+            state.activeCategory = val;
+            applyFilters();
+        }
+
+        function handleMasteryFilter(val) {
+            state.activeMasteryFilter = val;
+            applyFilters();
+        }
+
+        function shuffleDeck() {
+            // Fisher-Yates Shuffle on current filtered array
+            for (let i = state.filteredCards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [state.filteredCards[i], state.filteredCards[j]] = [state.filteredCards[j], state.filteredCards[i]];
+            }
+            state.currentIndex = 0;
+            if (state.isFlipped) flipCard();
+            renderCard();
+            showToast("Deck shuffled!");
+        }
+
+        function resetFilters() {
+            state.activeCategory = 'ALL';
+            state.activeMasteryFilter = 'ALL';
+            state.searchQuery = '';
+            document.getElementById('category-filter').value = 'ALL';
+            document.getElementById('mastery-filter').value = 'ALL';
+            document.getElementById('search-input').value = '';
+            document.getElementById('clear-search').classList.add('hidden');
+            applyFilters();
+            showToast("Filters reset");
+        }
+
+        // =========================================================================
+        // RENDER FLASHCARD ENGINE
+        // =========================================================================
+        function getCurrentCard() {
+            if (state.filteredCards.length === 0) return null;
+            return state.filteredCards[state.currentIndex];
+        }
+
+        function renderCard() {
+            const card = getCurrentCard();
+
+            if (!card) {
+                // Empty state fallback
+                document.getElementById('card-front-category').innerText = "EMPTY";
+                document.getElementById('card-front-code').innerText = "N/A";
+                document.getElementById('card-front-svg-container').innerHTML = `
+                    <div class="text-center text-slate-500 my-8">
+                        <i class="fa-solid fa-filter-circle-xmark text-4xl mb-2"></i>
+                        <p class="text-sm">No aeronautical symbols match your current filters.</p>
+                        <button onclick="resetFilters()" class="mt-3 px-3 py-1 bg-cyan-500 text-slate-950 rounded text-xs font-bold">Reset Filters</button>
+                    </div>`;
+                document.getElementById('card-index-indicator').innerText = "0 of 0";
+                return;
+            }
+
+            const isMastered = state.masteredIds.has(card.id);
+
+            // Front Render
+            document.getElementById('card-front-category').innerText = card.category;
+            document.getElementById('card-front-code').innerText = card.code;
+            document.getElementById('card-front-svg-container').innerHTML = card.svg;
+            document.getElementById('card-index-indicator').innerText = `Card ${state.currentIndex + 1} of ${state.filteredCards.length}`;
+            document.getElementById('jump-input').value = state.currentIndex + 1;
+            document.getElementById('jump-input').max = state.filteredCards.length;
+            document.getElementById('jump-max').innerText = `/ ${state.filteredCards.length}`;
+
+            // Mastery button state
+            const badge = document.getElementById('mastery-badge');
+            const icon = document.getElementById('mastery-icon');
+            const text = document.getElementById('mastery-text');
+
+            if (isMastered) {
+                badge.className = "text-xs px-3 py-1 rounded-full border border-emerald-500/50 bg-emerald-950/80 text-emerald-400 flex items-center space-x-1.5 transition-all";
+                icon.className = "fa-solid fa-circle-check";
+                text.innerText = "Mastered";
+            } else {
+                badge.className = "text-xs px-3 py-1 rounded-full border border-slate-700 bg-slate-900/80 text-slate-400 hover:border-cyan-500/50 flex items-center space-x-1.5 transition-all";
+                icon.className = "fa-regular fa-circle";
+                text.innerText = "Unmastered";
+            }
+
+            // Back Render
+            document.getElementById('card-back-category').innerText = card.category;
+            document.getElementById('card-back-title').innerText = card.name;
+            document.getElementById('card-back-code').innerText = card.code;
+            document.getElementById('card-back-def').innerText = card.def;
+            document.getElementById('card-back-limits').innerText = card.limits;
+            document.getElementById('card-back-convention').innerText = card.convention;
+            document.getElementById('card-back-sop').innerText = card.sop;
+
+            updateUrlHash();
+        }
+
+        // =========================================================================
+        // CARD INTERACTION & NAVIGATION
+        // =========================================================================
+        function flipCard() {
+            state.isFlipped = !state.isFlipped;
+            const flashcard = document.getElementById('flashcard');
+            if (state.isFlipped) {
+                flashcard.classList.add('rotate-y-180');
+            } else {
+                flashcard.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextCard() {
+            if (state.filteredCards.length === 0) return;
+            if (state.isFlipped) flipCard();
+            state.currentIndex = (state.currentIndex + 1) % state.filteredCards.length;
+            renderCard();
+        }
+
+        function prevCard() {
+            if (state.filteredCards.length === 0) return;
+            if (state.isFlipped) flipCard();
+            state.currentIndex = (state.currentIndex - 1 + state.filteredCards.length) % state.filteredCards.length;
+            renderCard();
+        }
+
+        function jumpToCardIndex(val) {
+            let num = parseInt(val, 10);
+            if (isNaN(num)) return;
+            num = Math.max(1, Math.min(num, state.filteredCards.length));
+            if (state.isFlipped) flipCard();
+            state.currentIndex = num - 1;
+            renderCard();
+        }
+
+        function toggleMastery(event) {
+            if (event) event.stopPropagation();
+            const card = getCurrentCard();
+            if (!card) return;
+
+            if (state.masteredIds.has(card.id)) {
+                state.masteredIds.delete(card.id);
+                showToast(`Marked "${card.name}" as Needs Review`);
+            } else {
+                state.masteredIds.add(card.id);
+                showToast(`Mastered "${card.name}"!`);
+            }
+
+            saveLocalStorage();
+            renderCard();
+            updateStatsHUD();
+        }
+
+        // =========================================================================
+        // HUD & METRICS ENGINE
+        // =========================================================================
+        function updateStatsHUD() {
+            const total = symbolsData.length;
+            const mastered = state.masteredIds.size;
+            const review = total - mastered;
+            const percentage = Math.round((mastered / total) * 100);
+
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-mastered').innerText = mastered;
+            document.getElementById('stat-review').innerText = review;
+            document.getElementById('stat-percentage').innerText = `${percentage}%`;
+            document.getElementById('mastery-progress-bar').style.width = `${percentage}%`;
+        }
+
+        // =========================================================================
+        // KEYBOARD SHORTCUT ENGINE
+        // =========================================================================
+        function setupKeyboardShortcuts() {
+            window.addEventListener('keydown', (e) => {
+                // Don't trigger shortcuts when typing in input
+                if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+                if (state.currentView === 'deck') {
+                    if (e.code === 'Space') {
+                        e.preventDefault();
+                        flipCard();
+                    } else if (e.code === 'ArrowRight') {
+                        e.preventDefault();
+                        nextCard();
+                    } else if (e.code === 'ArrowLeft') {
+                        e.preventDefault();
+                        prevCard();
+                    } else if (e.code === 'KeyM') {
+                        e.preventDefault();
+                        toggleMastery();
+                    } else if (e.code === 'KeyS') {
+                        e.preventDefault();
+                        shuffleDeck();
+                    }
+                }
+            });
+        }
+
+        // =========================================================================
+        // VIEW SWITCHER ENGINE (DECK VS QUIZ)
+        // =========================================================================
+        function switchView(view) {
+            state.currentView = view;
+            const deckView = document.getElementById('deck-view');
+            const quizView = document.getElementById('quiz-view');
+            const deckBtn = document.getElementById('view-deck-btn');
+            const quizBtn = document.getElementById('view-quiz-btn');
+
+            if (view === 'deck') {
+                deckView.classList.remove('hidden');
+                quizView.classList.add('hidden');
+                deckBtn.className = "px-3 py-1.5 rounded-md font-medium flex items-center space-x-2 transition-all bg-cockpit-accent text-slate-950 shadow-sm";
+                quizBtn.className = "px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-slate-200 flex items-center space-x-2 transition-all";
+            } else {
+                deckView.classList.add('hidden');
+                quizView.classList.remove('hidden');
+                quizBtn.className = "px-3 py-1.5 rounded-md font-medium flex items-center space-x-2 transition-all bg-cockpit-accent text-slate-950 shadow-sm";
+                deckBtn.className = "px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-slate-200 flex items-center space-x-2 transition-all";
+                startQuizQuestion();
+            }
+        }
+
+        // =========================================================================
+        // INTERACTIVE QUIZ MODE ENGINE
+        // =========================================================================
+        function startQuizQuestion() {
+            state.quiz.answered = false;
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+
+            // Pick random target card from dataset
+            const targetIndex = Math.floor(Math.random() * symbolsData.length);
+            const targetCard = symbolsData[targetIndex];
+            state.quiz.currentCard = targetCard;
+
+            // Generate 3 random wrong options
+            const options = [targetCard];
+            while (options.length < 4) {
+                const randIndex = Math.floor(Math.random() * symbolsData.length);
+                const option = symbolsData[randIndex];
+                if (!options.some(o => o.id === option.id)) {
+                    options.push(option);
+                }
+            }
+
+            // Shuffle options
+            for (let i = options.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [options[i], options[j]] = [options[j], options[i]];
+            }
+            state.quiz.options = options;
+
+            // Render SVG Target
+            document.getElementById('quiz-svg-container').innerHTML = targetCard.svg;
+
+            // Render Option Buttons
+            const grid = document.getElementById('quiz-options-grid');
+            grid.innerHTML = options.map((opt, idx) => `
+                <button onclick="handleQuizAnswer(${opt.id}, this)" class="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 rounded-xl text-left text-xs sm:text-sm text-slate-200 font-medium transition-all flex items-center gap-3 group">
+                    <span class="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-mono text-cyan-400 group-hover:bg-cyan-500 group-hover:text-slate-950">
+                        ${String.fromCharCode(65 + idx)}
+                    </span>
+                    <span class="flex-1">${opt.name}</span>
+                </button>
+            `).join('');
+
+            document.getElementById('quiz-score').innerText = `${state.quiz.score} / ${state.quiz.total}`;
+        }
+
+        function handleQuizAnswer(selectedId, buttonElem) {
+            if (state.quiz.answered) return;
+            state.quiz.answered = true;
+            state.quiz.total++;
+
+            const correct = selectedId === state.quiz.currentCard.id;
+            const feedback = document.getElementById('quiz-feedback');
+
+            if (correct) {
+                state.quiz.score++;
+                buttonElem.classList.add('border-emerald-500', 'bg-emerald-950/60', 'text-emerald-300');
+                feedback.className = "w-full p-4 rounded-xl font-medium text-sm text-center bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 flex flex-col gap-1";
+                feedback.innerHTML = `
+                    <div class="flex items-center justify-center gap-2 font-bold"><i class="fa-solid fa-circle-check"></i> CORRECT IDENTIFICATION</div>
+                    <div class="text-xs font-mono text-slate-300">${state.quiz.currentCard.def}</div>`;
+            } else {
+                buttonElem.classList.add('border-red-500', 'bg-red-950/60', 'text-red-300');
+                feedback.className = "w-full p-4 rounded-xl font-medium text-sm text-center bg-red-950/80 border border-red-500/50 text-red-300 flex flex-col gap-1";
+                feedback.innerHTML = `
+                    <div class="flex items-center justify-center gap-2 font-bold"><i class="fa-solid fa-circle-xmark"></i> INCORRECT</div>
+                    <div class="text-xs font-mono text-slate-200">Correct Answer: <strong>${state.quiz.currentCard.name}</strong></div>`;
+            }
+
+            feedback.classList.remove('hidden');
+            document.getElementById('quiz-next-btn').classList.remove('hidden');
+            document.getElementById('quiz-score').innerText = `${state.quiz.score} / ${state.quiz.total}`;
+        }
+
+        function nextQuizQuestion() {
+            startQuizQuestion();
+        }
+
+        // =========================================================================
+        // SHARE & EXPORT MODAL LOGIC
+        // =========================================================================
+        function openShareModal() {
+            updateUrlHash();
+            document.getElementById('share-url-input').value = window.location.href;
+            document.getElementById('share-modal').classList.remove('hidden');
+        }
+
+        function closeShareModal() {
+            document.getElementById('share-modal').classList.add('hidden');
+        }
+
+        function copyShareUrl() {
+            const input = document.getElementById('share-url-input');
+            input.select();
+            document.execCommand('copy');
+            showToast("Shareable link copied to clipboard!");
+        }
+
+        function exportUserData() {
+            const data = {
+                masteredIds: [...state.masteredIds],
+                exportDate: new Date().toISOString(),
+                version: "ICAO-ANNEX4-V1"
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `icao_symbols_progress_${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast("Export completed!");
+        }
+
+        function importUserData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (parsed && Array.isArray(parsed.masteredIds)) {
+                        state.masteredIds = new Set(parsed.masteredIds);
+                        saveLocalStorage();
+                        applyFilters();
+                        closeShareModal();
+                        showToast(`Successfully imported ${state.masteredIds.size} mastered cards!`);
+                    } else {
+                        showToast("Invalid JSON data format.");
+                    }
+                } catch (err) {
+                    showToast("Error parsing JSON file.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Help Modal Controls
+        function openHelpModal() {
+            document.getElementById('help-modal').classList.remove('hidden');
+        }
+
+        function closeHelpModal() {
+            document.getElementById('help-modal').classList.add('hidden');
+        }
+
+        // =========================================================================
+        // TOAST NOTIFICATION ENGINE
+        // =========================================================================
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = "bg-slate-900 border border-cyan-500/50 text-slate-100 text-xs font-mono px-4 py-2.5 rounded-xl shadow-xl transition-all duration-300 transform translate-y-2 opacity-0 flex items-center gap-2";
+            toast.innerHTML = `<i class="fa-solid fa-circle-info text-cyan-400"></i> ${msg}`;
+            
+            container.appendChild(toast);
+
+            // Animate in
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
