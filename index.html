@@ -139,7 +139,7 @@
                     </button>
                     <button id="view-card-check-btn" onclick="switchView('card-check')" class="px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-slate-200 flex items-center space-x-2 transition-all">
                         <i class="fa-solid fa-circle-question"></i>
-                        <span class="hidden sm:inline">Card Check</span>
+                        <span>Card Check</span>
                     </button>
                     <button id="view-quiz-btn" onclick="switchView('quiz')" class="px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-slate-200 flex items-center space-x-2 transition-all">
                         <i class="fa-solid fa-graduation-cap"></i>
@@ -166,6 +166,16 @@
 
         <!-- DECK VIEW CONTAINER -->
         <div id="deck-view" class="flex flex-col gap-6">
+
+            <section class="glass-panel p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-cyan-800/50">
+                <div>
+                    <h2 class="font-bold text-slate-100">Start with a two-choice Card Check</h2>
+                    <p class="text-sm text-slate-400">Identify one symbol by choosing its correct definition, then continue to the quizzes.</p>
+                </div>
+                <button onclick="switchView('card-check')" class="shrink-0 px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg">
+                    Start Card Check
+                </button>
+            </section>
 
             <!-- CONTROL BAR: Search, Filter & Metrics -->
             <div class="glass-panel p-4 rounded-xl flex flex-col lg:flex-row gap-4 justify-between items-stretch lg:items-center">
