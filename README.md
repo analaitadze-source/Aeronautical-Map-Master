@@ -1,4 +1,4 @@
-# Aeronautical-Map-Master
+# Aeronautical Map Master
 
 The deck contains 125 curated ICAO Annex 4 Appendix 2 chart symbols and 25 ICAO Annex 14 Volume I physical airport markings, signs, and lights. The Annex 4 set includes 25 aerodrome/heliport and obstacle-chart symbols (Appendix 2, APP 2-20); the Annex 14 set depicts physical airport features, not chart symbols. The selection is not statistically ranked by frequency. Each card displays its source, applicable standard section, version notes, and compliance limitations.
 
