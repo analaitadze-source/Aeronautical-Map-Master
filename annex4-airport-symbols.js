@@ -99,7 +99,7 @@
             section: "13.6.1(m)",
             ink: chartInk,
             note: "A filled dot represents an individual point light.",
-            art: `<circle cx="80" cy="50" r="6" fill="${chartInk}"/>`
+            art: `<circle cx="64" cy="50" r="5" fill="${chartInk}"/><circle cx="96" cy="50" r="5" fill="none" stroke="${chartInk}" stroke-width="2"/>`
         },
         {
             number: 155,
@@ -233,9 +233,37 @@
             section: "3.8.4.1(b)",
             ink: chartInk,
             note: "A dashed rectangular outline identifies the clearway beyond the runway end.",
-            art: `<path d="M43 31v38m0-29h87m-87 20h87m0-20v20" fill="none" stroke="${chartInk}" stroke-width="2.5" stroke-dasharray="7 4"/><path d="M43 31v38m0-29h12m-12 20h12" stroke="${chartInk}" stroke-width="2.5"/>`
+            art: `<text x="20" y="55" font-size="9" fill="${chartInk}">CWY</text><path d="M46 31v38m0-29h84m-84 20h84m0-20v20" fill="none" stroke="${chartInk}" stroke-width="2.5" stroke-dasharray="7 4"/><path d="M46 31v38m0-29h12m-12 20h12" stroke="${chartInk}" stroke-width="2.5"/>`
         }
     ];
+
+    const visualAudit = {
+        145: "PDF p. 154: solid rectangular hard-surface runway fill is represented.",
+        146: "PDF p. 154: the pierced-steel/mesh runway grid is represented.",
+        147: "PDF p. 154: the unpaved runway stipple is represented; dot density is schematic.",
+        148: "PDF p. 154: SWY label and outlined stopway with solid end treatment are represented.",
+        149: "PDF p. 154: taxiway outline and hatched parking area are represented; layout is schematic.",
+        150: "PDF p. 154: the H-in-circle helicopter alighting mark is represented.",
+        151: "PDF p. 154: ARP crosshair and centre mark are represented.",
+        152: "PDF p. 154: VOR checkpoint arrow/target form is represented.",
+        153: "PDF p. 154: outlined RVR observation triangle is represented.",
+        154: "PDF p. 154: filled and open point-light variants are represented.",
+        155: "PDF p. 154: obstacle-light starburst is represented.",
+        156: "PDF p. 154: lighted landing-direction T and rays are represented.",
+        157: "PDF p. 154: unlighted landing-direction T is represented.",
+        158: "PDF p. 154: three-point stop-bar symbol is represented.",
+        159: "PDF p. 154: both runway-holding position patterns A and B are represented; line spacing is schematic.",
+        160: "PDF p. 154: dashed intermediate-holding line is represented.",
+        161: "PDF p. 154: open-circle hot-spot mark is represented.",
+        162: "PDF p. 154: tree/shrub asterisk plan symbol is represented.",
+        163: "PDF p. 154: pole/tower small-ring symbol is represented.",
+        164: "PDF p. 154: filled building/large-structure block is represented.",
+        165: "PDF p. 154: railroad line and cross-ties are represented.",
+        166: "PDF p. 154: overhead-cable line and T-supports are represented.",
+        167: "PDF p. 154: plan outline and profile example for terrain penetrating the obstacle plane are represented; topography is schematic.",
+        168: "PDF p. 154: repeated escarpment hachures are represented.",
+        170: "PDF p. 154: CWY label and dashed clearway boundary are represented."
+    };
 
     function makeCard(entry) {
         const pageUrl = `${annex4Url}#page=154`;
@@ -246,7 +274,7 @@
                 url: pageUrl,
                 version: versionNote,
                 citation: `Symbol ${entry.number}: ${entry.name}; Appendix 2, APP 2-20, ${entry.plate}`,
-                comment: `Source figure: Appendix 2, APP 2-20, symbol ${entry.number}, “${entry.name}.” The SVG is an independent vector reconstruction of that figure.`
+                comment: `Visual check: ${visualAudit[entry.number]} Independent vector reconstruction; exact dimensions and drawing scale are not specified by this SVG.`
             },
             {
                 document: "ICAO Annex 4 — official listing",
@@ -289,7 +317,7 @@
             convention: `${entry.plate}; monochrome black symbol as shown on the source plate.`,
             sop: `Study note: ${entry.note}`,
             references,
-            complianceComment: `Found in ICAO Annex 4 Appendix 2, APP 2-20 (PDF page 154), symbol ${entry.number}, under “${entry.plate}”. Chart context: ${chapterCitation}. ${limitation}`
+            complianceComment: `Visual check: ${visualAudit[entry.number]} Source: ICAO Annex 4 Appendix 2, APP 2-20 (PDF page 154), symbol ${entry.number}, “${entry.name}”, under “${entry.plate}”; chart context ${chapterCitation}. ${limitation}`
         };
     }
 
