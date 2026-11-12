@@ -8,7 +8,7 @@
     const aerodromePlate = "Symbols for Aerodrome/Heliport Charts";
     const obstaclePlate = "Symbols for Aerodrome Obstacle Charts — Types A, B and C";
     const versionNote = "Annex 4, 11th Edition (July 2009); accessible FOCA copy is marked as an in-progress consolidation and its amendment record indicates Amendment 62. ICAO lists Amendments 57–63; Amendment 63 text was not independently inspected.";
-    const limitation = "Simplified study redrawing, not approved chart artwork. The accessible base copy is not a current consolidated edition; Amendment 63 and the full Doc 8697 text were not checked. Not for operational use.";
+    const limitation = "Independent vector reconstruction of the cited figure, not official source artwork or an approved chart symbol file. The accessible base copy is not a current consolidated edition; Amendment 63 and the full Doc 8697 text were not checked. Current-edition compliance is not established; not for operational use.";
 
     const entries = [
         {
@@ -246,7 +246,7 @@
                 url: pageUrl,
                 version: versionNote,
                 citation: `Symbol ${entry.number}: ${entry.name}; Appendix 2, APP 2-20, ${entry.plate}`,
-                comment: `The symbol number and name are listed on the referenced plate. The SVG is a simplified study redraw.`
+                comment: `Source figure: Appendix 2, APP 2-20, symbol ${entry.number}, “${entry.name}.” The SVG is an independent vector reconstruction of that figure.`
             },
             {
                 document: "ICAO Annex 4 — official listing",

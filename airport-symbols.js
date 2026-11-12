@@ -409,7 +409,7 @@
     function makeCard(entry, index) {
         const referenceVersion = "Annex 14, Volume I, 9th Edition (July 2022); ICAO's catalogue lists Amendment 18 and Corrigenda 1–3, with Corrigendum 3 dated 8 June 2026.";
         const referenceCitation = `${entry.section}: ${entry.name}`;
-        const limitation = "This is a schematic study redrawing. The amendment and corrigendum texts were not checked clause-by-clause; this is not a current-compliance determination or operational reference.";
+        const limitation = `Independent vector reconstruction of the ${entry.name} example cited at Annex 14, Volume I ${entry.section}; not official source artwork, a dimensional installation drawing, or an approved aerodrome plan. The amendment and corrigendum texts were not checked clause-by-clause, so this is not a current-compliance determination or operational reference.`;
 
         return {
             id: `ICAO-AD-${String(index + 1).padStart(2, "0")}`,
@@ -427,7 +427,7 @@
                     url: annex14Url,
                     version: referenceVersion,
                     citation: referenceCitation,
-                    comment: "The colour shown follows the referenced marking, sign or lighting convention."
+                    comment: `The card identifies ${entry.group} and depicts the stated colour convention (${entry.colour}) as a study reference; detailed dimensions, variants, and amendment status are not certified.`
                 },
                 {
                     document: "ICAO Annex 14, Volume I — Corrigendum 3 listing",
