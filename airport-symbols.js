@@ -1,6 +1,6 @@
 (() => {
     const annex14Url = "https://store.icao.int/en/annex-14-aerodromes";
-    const corrigendumUrl = "https://store.icao.int/en/annex-14-aerodromes-volume-i-aerodromes-design-and-operations-corrigendum-no-3-dated-8-6-26";
+    const annex14SourceUrl = "https://www.bazl.admin.ch/dam/de/sd-web/PzvzqQpFptul/icao_annex_14_aerodromesvolumei-aerodromedesignandoperations.pdf";
     const surface = "#3f4750";
 
     const entries = [
@@ -70,23 +70,15 @@
         },
         {
             name: "Taxiway edge marking",
-            section: "5.2.10",
+            section: "Not specified as an Annex 14 surface marking",
             group: "Taxiway marking",
             colour: "Yellow",
-            note: "Yellow lines define the usable taxiway edge.",
+            note: "Excluded from the selected deck: Annex 14 specifies taxiway edge lights and markers, but not this surface-marking symbol.",
             art: `<rect x="17" y="23" width="126" height="54" rx="8" fill="${surface}"/><path d="M28 34h104v32H28z" fill="none" stroke="#ffdc00" stroke-width="3"/>`
         },
         {
-            name: "Taxiway shoulder marking",
-            section: "5.2.10",
-            group: "Taxiway marking",
-            colour: "Yellow",
-            note: "Yellow diagonal stripes distinguish a non-load-bearing shoulder.",
-            art: `<rect x="17" y="23" width="126" height="54" rx="8" fill="${surface}"/><path d="M22 34h116M22 66h116" stroke="#ffdc00" stroke-width="2"/><path d="m31 35 15 15m3-15 15 15m3-15 15 15m3-15 15 15m3-15 15 15m3-15 12 12M31 65l15-15m3 15 15-15m3 15 15-15m3 15 15-15m3 15 15-15m3 15 12-12" stroke="#ffdc00" stroke-width="2"/>`
-        },
-        {
             name: "Runway-holding position marking",
-            section: "5.2.11",
+            section: "5.2.10",
             group: "Holding marking",
             colour: "Yellow",
             note: "The four-line pattern identifies a runway-holding position.",
@@ -94,7 +86,7 @@
         },
         {
             name: "Intermediate holding position marking",
-            section: "5.2.12",
+            section: "5.2.11",
             group: "Holding marking",
             colour: "Yellow",
             note: "A broken yellow line marks an intermediate holding position.",
@@ -110,7 +102,7 @@
         },
         {
             name: "Aircraft stand lead-in line",
-            section: "5.2.14",
+            section: "5.2.13",
             group: "Apron marking",
             colour: "Yellow",
             note: "A yellow lead-in line guides an aircraft to its stand.",
@@ -177,8 +169,8 @@
             section: "5.4.2",
             group: "Mandatory instruction sign",
             colour: "White legend on red",
-            note: "A white horizontal bar on red indicates a no-entry route.",
-            art: `<circle cx="80" cy="50" r="27" fill="#c62828"/><path d="M62 50h36" stroke="#ffffff" stroke-width="8"/>`
+            note: "The red mandatory-instruction sign carries the white NO ENTRY legend.",
+            art: `<rect x="18" y="30" width="124" height="40" rx="2" fill="#c62828"/><text x="80" y="56" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">NO ENTRY</text>`
         },
         {
             name: "ILS critical-area holding sign",
@@ -234,7 +226,7 @@
             group: "Direction sign",
             colour: "Black legend on yellow",
             note: "The yellow sign and black arrow identify a runway exit taxiway.",
-            art: `<rect x="22" y="30" width="116" height="40" rx="2" fill="#ffdc00"/><text x="57" y="56" text-anchor="middle" font-size="15" font-weight="700" fill="#111111">← A</text><path d="M91 50h27m0 0-8-7m8 7-8 7" stroke="#111111" stroke-width="3"/>`
+            art: `<rect x="22" y="30" width="116" height="40" rx="2" fill="#ffdc00"/><path d="M48 50h36m-36 0 9-8m-9 8 9 8" fill="none" stroke="#111111" stroke-width="3"/><text x="109" y="56" text-anchor="middle" font-size="17" font-weight="700" fill="#111111">A</text>`
         },
         {
             name: "Taxiway intersection direction sign",
@@ -286,23 +278,23 @@
         },
         {
             name: "Approach lighting system",
-            section: "5.3 (approach lighting systems)",
+            section: "5.3.4",
             group: "Aerodrome lighting",
             colour: "White",
-            note: "White lights form the approach-lighting pattern before the runway threshold.",
-            art: `<path d="M25 50h110" stroke="#9ca3af" stroke-width="2"/><path d="M39 42v16m14-20v24m14-20v16m13-24v32m13-24v16m14-20v24m14-16v16" stroke="#ffffff" stroke-width="4"/><path d="M30 50h100" stroke="#ffffff" stroke-width="1" stroke-dasharray="2 5"/>`
+            note: "A simplified white centre-line and crossbar example represents an approach-lighting system.",
+            art: `<path d="M23 50h114" stroke="#9ca3af" stroke-width="2"/><path d="M32 46v8m15-8v8m15-8v8m15-8v8m15-8v8m15-8v8m15-8v8" stroke="#ffffff" stroke-width="4"/><path d="M77 37v26" stroke="#ffffff" stroke-width="3"/><path d="M28 50h100" stroke="#ffffff" stroke-width="1" stroke-dasharray="2 5"/>`
         },
         {
             name: "Runway edge lights",
-            section: "5.3 (runway edge lights)",
+            section: "5.3.9",
             group: "Aerodrome lighting",
             colour: "White, with yellow caution-zone lights where applicable",
             note: "Runway edge lights are white, with yellow in the applicable caution zone.",
-            art: `<rect x="20" y="28" width="120" height="44" rx="8" fill="${surface}"/><path d="M27 32h106m-106 36h106" stroke="#ffffff" stroke-width="3"/><circle cx="111" cy="32" r="4" fill="#ffb000"/><circle cx="123" cy="32" r="4" fill="#ffb000"/><circle cx="111" cy="68" r="4" fill="#ffb000"/><circle cx="123" cy="68" r="4" fill="#ffb000"/>`
+            art: `<rect x="20" y="28" width="120" height="44" rx="8" fill="${surface}"/><path d="M27 32h106m-106 36h106" stroke="#ffffff" stroke-width="3"/><circle cx="111" cy="32" r="4" fill="#ffdc00"/><circle cx="123" cy="32" r="4" fill="#ffdc00"/><circle cx="111" cy="68" r="4" fill="#ffdc00"/><circle cx="123" cy="68" r="4" fill="#ffdc00"/>`
         },
         {
             name: "Runway threshold lights",
-            section: "5.3 (runway threshold lights)",
+            section: "5.3.10",
             group: "Aerodrome lighting",
             colour: "Green in the approach direction",
             note: "Green threshold lights identify the runway threshold to arriving aircraft.",
@@ -310,7 +302,7 @@
         },
         {
             name: "Runway end lights",
-            section: "5.3 (runway end lights)",
+            section: "5.3.11",
             group: "Aerodrome lighting",
             colour: "Red",
             note: "Red runway-end lights identify the end of the usable runway.",
@@ -318,7 +310,7 @@
         },
         {
             name: "Runway centre line lights",
-            section: "5.3 (runway centre line lights)",
+            section: "5.3.12",
             group: "Aerodrome lighting",
             colour: "White, changing to red and white, then red near the end",
             note: "Centreline lights use white, then alternating red and white, then red near the runway end.",
@@ -326,7 +318,7 @@
         },
         {
             name: "Touchdown zone lights",
-            section: "5.3 (runway touchdown zone lights)",
+            section: "5.3.13",
             group: "Aerodrome lighting",
             colour: "White",
             note: "Paired white light bars identify the touchdown zone.",
@@ -334,7 +326,7 @@
         },
         {
             name: "Taxiway centre line lights",
-            section: "5.3 (taxiway centre line lights)",
+            section: "5.3.17",
             group: "Aerodrome lighting",
             colour: "Green",
             note: "Green lights delineate the taxiway centre line.",
@@ -342,7 +334,7 @@
         },
         {
             name: "Taxiway edge lights",
-            section: "5.3 (taxiway edge lights)",
+            section: "5.3.18",
             group: "Aerodrome lighting",
             colour: "Blue",
             note: "Blue lights delineate taxiway edges.",
@@ -350,7 +342,7 @@
         },
         {
             name: "Stop bar lights",
-            section: "5.3 (stop bars)",
+            section: "5.3.20",
             group: "Aerodrome lighting",
             colour: "Red",
             note: "A transverse row of red lights forms a stop bar.",
@@ -374,11 +366,11 @@
         },
         {
             name: "Precision approach path indicator (PAPI)",
-            section: "5.3 (visual approach slope indicator systems)",
+            section: "5.3.5",
             group: "Aerodrome lighting",
             colour: "Red and white",
             note: "Four PAPI units show red and white indications relative to approach slope.",
-            art: `<path d="M28 72h104" stroke="${surface}" stroke-width="5"/><rect x="36" y="43" width="16" height="19" rx="4" fill="#ffffff"/><rect x="61" y="43" width="16" height="19" rx="4" fill="#ffffff"/><rect x="86" y="43" width="16" height="19" rx="4" fill="#e32636"/><rect x="111" y="43" width="16" height="19" rx="4" fill="#e32636"/>`
+            art: `<path d="M28 72h104" stroke="${surface}" stroke-width="5"/><rect x="36" y="43" width="16" height="19" rx="4" fill="#ffffff"/><rect x="61" y="43" width="16" height="19" rx="4" fill="#ffffff"/><rect x="86" y="43" width="16" height="19" rx="4" fill="#e32636"/><rect x="111" y="43" width="16" height="19" rx="4" fill="#e32636"/><rect x="137" y="31" width="8" height="40" rx="3" fill="${surface}"/>`
         },
         {
             name: "Aerodrome beacon",
@@ -406,10 +398,41 @@
         }
     ];
 
+    const visualAudit = {
+        "Runway designation marking": "Checked against 5.2.2.4–5.2.2.6 and Figures 5-2/5-3: a white two-digit runway number is shown; the actual designator, suffix, and dimensions are site-specific.",
+        "Runway centre line marking": "Checked against 5.2.3.3–5.2.3.4 and Figure 5-2: broken white centre-line stripes are shown; stripe/gap lengths and widths are schematic.",
+        "Runway threshold marking": "Checked against 5.2.4.4–5.2.4.5 and Figure 5-2: longitudinal white bars are shown symmetrically; count, spacing, and dimensions vary with runway width.",
+        "Runway aiming point marking": "Checked against 5.2.5.4, Table 5-1, and Figure 5-5: paired white stripes are shown; their position and dimensions depend on landing distance and runway configuration.",
+        "Touchdown zone marking": "Checked against 5.2.6.3–5.2.6.4 and Figure 5-5: paired white rectangles are shown symmetrically; pair count and pattern vary with landing distance.",
+        "Runway side stripe marking": "Checked against 5.2.7.3–5.2.7.5 and Figure 5-5: two white edge stripes are shown; placement and width are schematic.",
+        "Taxiway centre line marking": "Checked against 5.2.1.5, 5.2.8.6, and Figure 5-6: a continuous yellow taxiway centre line is shown; curve geometry and enhanced variants are omitted.",
+        "Runway turn pad marking": "Checked against 5.2.1.5 and 5.2.9.1–5.2.9.7: a continuous yellow line guides a 180-degree turn and runway alignment; curve, extension, and clearance are schematic.",
+        "Runway-holding position marking": "Checked against 5.2.10.2–5.2.10.7 and Figures 5-6/5-8: yellow solid-solid and broken-broken lines show pattern A; dimensions and local orientation are schematic.",
+        "Intermediate holding position marking": "Checked against 5.2.11.3–5.2.11.5 and Figure 5-6: one broken yellow line is shown; placement and dimensions are schematic.",
+        "Aircraft stand lead-in line": "Checked against 5.2.1.5 and 5.2.13.3–5.2.13.9: a yellow lead-in line with a directional arrow is shown; stand-specific turns, identifiers, and stopping guidance vary.",
+        "Mandatory instruction surface marking": "Checked against 5.2.16.1 and 5.2.16.6–5.2.16.10/Figure 5-10: white legend on a red field is correct; this sample text is illustrative.",
+        "Runway-holding position sign": "Checked against 5.4.2.2, 5.4.2.12, and Figure 5-30: white runway legend on a red rectangular sign is shown; exact inscription depends on the holding position.",
+        "No-entry sign": "Checked against 5.4.2.7, 5.4.2.10, and 5.4.2.12/Figure 5-30: the red rectangular sign with white NO ENTRY legend matches the prescribed sign form.",
+        "Taxiway location sign": "Checked against 5.4.3.26 and 5.4.3.32/Figure 5-31: a yellow taxiway identifier on black is shown without an arrow; the sample letter is illustrative.",
+        "Taxiway direction sign": "Checked against 5.4.3.25 and 5.4.3.31/Figure 5-31: a black arrow and taxiway identifier on yellow are shown; layout is schematic.",
+        "Runway exit sign": "Checked against 5.4.3.25 and 5.4.3.27/Figure 5-31: one black exit arrow and designator on yellow are shown; the arrow indicates the intended exit direction.",
+        "Approach lighting system": "Checked against 5.3.4.2–5.3.4.7: the simplified white layout now includes a centre line and crossbar; actual configuration depends on runway type and approach category.",
+        "Runway edge lights": "Checked against 5.3.9.3–5.3.9.7: parallel rows are shown, with white lights and an example yellow caution zone; displaced-threshold red and spacing details are omitted.",
+        "Runway threshold lights": "Checked against 5.3.10.2 and 5.3.10.9: a green row at the threshold is shown in the approach direction; count and spacing depend on runway category.",
+        "Runway end lights": "Checked against 5.3.11.2–5.3.11.4: a red row is shown in the runway direction; count and spacing are schematic.",
+        "Runway centre line lights": "Checked against 5.3.12.5 and 5.3.12.7: the illustration proceeds from white to alternating red/white and red at the runway end; transition distances are not to scale.",
+        "Touchdown zone lights": "Checked against 5.3.13.2–5.3.13.5: paired white barrettes are shown symmetrically; spacing and extent are schematic.",
+        "Taxiway centre line lights": "Checked against 5.3.17.6–5.3.17.8 and Figure 5-26: green lights depict an ordinary taxiway; exit and runway-proximity colour changes are not shown.",
+        "Taxiway edge lights": "Checked against 5.3.18.6–5.3.18.7 and Figure 5-26: blue lights delineate the taxiway edge; spacing is schematic.",
+        "Stop bar lights": "Checked against 5.3.20.4–5.3.20.7: a transverse row of red lights is shown facing approaching traffic; spacing is schematic.",
+        "Precision approach path indicator (PAPI)": "Checked against 5.3.5.24 and 5.3.5.26: four units are shown with two white outboard and two red nearer the runway on the on-slope indication; beam angles are not represented."
+    };
+
     function makeCard(entry, index) {
-        const referenceVersion = "Annex 14, Volume I, 9th Edition (July 2022); ICAO's catalogue lists Amendment 18 and Corrigenda 1–3, with Corrigendum 3 dated 8 June 2026.";
+        const referenceVersion = "Annex 14, Volume I, 9th Edition (July 2022); public Swiss FOCA-hosted copy with visible Amendment 18 and Corrigendum 3 markings (8 June 2026).";
         const referenceCitation = `${entry.section}: ${entry.name}`;
-        const limitation = `Independent vector reconstruction of the ${entry.name} example cited at Annex 14, Volume I ${entry.section}; not official source artwork, a dimensional installation drawing, or an approved aerodrome plan. The amendment and corrigendum texts were not checked clause-by-clause, so this is not a current-compliance determination or operational reference.`;
+        const visualCheck = visualAudit[entry.name];
+        const limitation = `Review scope: this educational SVG was checked against the cited Annex 14 provision in the public source copy. It is not ICAO source artwork or a dimensional/installation drawing; site-specific applicability, State differences, and aerodrome certification were not assessed.`;
 
         return {
             id: `ICAO-AD-${String(index + 1).padStart(2, "0")}`,
@@ -423,21 +446,21 @@
             sop: `Study note: ${entry.note}`,
             references: [
                 {
-                    document: "ICAO Annex 14, Volume I — Aerodromes",
-                    url: annex14Url,
+                    document: "ICAO Annex 14, Volume I — public 9th Edition copy hosted by Swiss FOCA",
+                    url: annex14SourceUrl,
                     version: referenceVersion,
                     citation: referenceCitation,
-                    comment: `The card identifies ${entry.group} and depicts the stated colour convention (${entry.colour}) as a study reference; detailed dimensions, variants, and amendment status are not certified.`
+                    comment: `${visualCheck} Card colour label: ${entry.colour}.`
                 },
                 {
-                    document: "ICAO Annex 14, Volume I — Corrigendum 3 listing",
-                    url: corrigendumUrl,
-                    version: "Corrigendum No. 3 dated 8 June 2026; official catalogue metadata",
-                    citation: "Publication metadata; corrigendum text not independently inspected",
+                    document: "ICAO Annex 14, Volume I — official catalogue",
+                    url: annex14Url,
+                    version: "9th Edition, July 2022; includes Amendment 18",
+                    citation: referenceCitation,
                     comment: limitation
                 }
             ],
-            complianceComment: `${limitation} These are physical aerodrome markings, signs and lights, not Annex 4 chart symbols.`
+            complianceComment: `Individual source check: ${visualCheck} Review limitation: ${limitation} These are physical aerodrome features, not Annex 4 chart symbols.`
         };
     }
 
@@ -449,7 +472,7 @@
         "Touchdown zone marking",
         "Runway side stripe marking",
         "Taxiway centre line marking",
-        "Taxiway edge marking",
+        "Runway turn pad marking",
         "Runway-holding position marking",
         "Intermediate holding position marking",
         "Aircraft stand lead-in line",
