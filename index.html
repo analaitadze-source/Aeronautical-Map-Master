@@ -131,11 +131,15 @@
 
             <!-- View Modes & Action Controls -->
             <div class="flex items-center space-x-2 sm:space-x-3 text-sm">
-                <!-- Deck / Quiz Mode Toggle -->
+                <!-- Deck / Practice / Quiz Mode Toggle -->
                 <div class="bg-slate-900/90 p-1 rounded-lg border border-slate-800 flex">
                     <button id="view-deck-btn" onclick="switchView('deck')" class="px-3 py-1.5 rounded-md font-medium flex items-center space-x-2 transition-all bg-cockpit-accent text-slate-950 shadow-sm">
                         <i class="fa-solid fa-clone"></i>
                         <span class="hidden sm:inline">Deck</span>
+                    </button>
+                    <button id="view-card-check-btn" onclick="switchView('card-check')" class="px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-slate-200 flex items-center space-x-2 transition-all">
+                        <i class="fa-solid fa-circle-question"></i>
+                        <span class="hidden sm:inline">Card Check</span>
                     </button>
                     <button id="view-quiz-btn" onclick="switchView('quiz')" class="px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-slate-200 flex items-center space-x-2 transition-all">
                         <i class="fa-solid fa-graduation-cap"></i>
@@ -373,6 +377,40 @@
         </div>
 
 
+        <div id="card-check-view" class="hidden flex-col gap-6 max-w-4xl mx-auto w-full">
+            <section class="glass-panel p-6 rounded-2xl flex flex-col gap-6">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-circle-question text-cyan-400"></i> Quick Card Check
+                        </h2>
+                        <p class="text-xs text-slate-400">Choose the correct definition for one symbol before starting a quiz.</p>
+                    </div>
+                    <div class="text-right font-mono">
+                        <div class="text-xs text-slate-400">Marks</div>
+                        <div id="card-check-score" class="text-lg font-bold text-cyan-400">0 / 0</div>
+                    </div>
+                </div>
+
+                <div id="card-check-progress" class="text-xs font-mono text-slate-400"></div>
+                <div class="w-full bg-slate-900/90 border border-slate-800 rounded-xl p-6 flex flex-col items-center justify-center min-h-[200px]">
+                    <span class="text-xs text-slate-500 font-mono mb-2">WHAT DOES THIS SYMBOL MEAN?</span>
+                    <div id="card-check-svg" class="w-full flex justify-center py-2"></div>
+                </div>
+                <div id="card-check-options" class="w-full grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                <div id="card-check-feedback" class="hidden w-full p-4 rounded-xl font-medium text-sm text-center"></div>
+                <div class="flex flex-wrap justify-between gap-3">
+                    <button onclick="shuffleCardCheck()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-sm text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-shuffle text-cyan-400"></i> Shuffle Symbol
+                    </button>
+                    <div class="flex gap-3">
+                        <button id="card-check-next" onclick="nextCardCheck()" class="hidden px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg">Next Symbol</button>
+                        <button onclick="switchView('quiz')" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg">Continue to Quiz</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
         <!-- QUIZ VIEW CONTAINER (Hidden by default) -->
         <div id="quiz-view" class="hidden flex-col gap-6 max-w-5xl mx-auto w-full">
             <div class="glass-panel p-6 rounded-2xl flex flex-col gap-6">
@@ -519,6 +557,7 @@
 
             <div class="text-xs text-slate-300 space-y-3 leading-relaxed">
                 <p><strong class="text-cyan-400">Deck status:</strong> The deck contains 125 Annex 4 Appendix 2 chart symbols, including 25 aerodrome/heliport and obstacle-chart symbols, and 25 Annex 14 Volume I physical airport markings, signs and lights. The Annex 14 cards describe physical aerodrome surfaces and equipment; they are not chart symbols. The accessible FOCA Annex 4 copy is marked as an in-progress consolidation with an amendment record indicating Amendment 62. ICAO's catalogue lists Amendments 57–63, but Amendment 63 text was not independently checked. Annex 14 Volume I is listed as the 9th Edition (July 2022), including Amendment 18; Corrigenda 1–3 are separately listed, with Corrigendum 3 dated 8 June 2026. Their texts were not checked clause-by-clause. The full Doc 8697 text was not independently inspected, so current consolidated compliance is not claimed.</p>
+                <p><strong class="text-cyan-400">Card Check:</strong> Choose the correct definition for one symbol from two options. Each answer earns one mark; shuffle or continue to check another card before moving to the quiz.</p>
                 <p><strong class="text-cyan-400">Quiz:</strong> Filter the three aerodrome groups by difficulty: Easy uses one group, Medium mixes two, and Hard uses all three. Choose identification or multiple matching, a question/pair count, and Version A, B, or C. Each correct identification or pair earns one mark; Start / Shuffle Quiz creates a shuffled round.</p>
                 <p><strong class="text-amber-300">Artwork:</strong> Card SVGs are study redrawings of the cited symbol plates, not approved chart artwork. Check the applicable chart and legend; do not use these cards for operational navigation or chart production.</p>
 
@@ -583,6 +622,15 @@
                 candidates: [],
                 questions: [],
                 questionIndex: 0
+            },
+            cardCheck: {
+                score: 0,
+                total: 0,
+                round: 0,
+                currentCard: null,
+                options: [],
+                answered: false,
+                lastCardId: null
             }
         };
 
@@ -945,27 +993,100 @@
         }
 
         // =========================================================================
-        // VIEW SWITCHER ENGINE (DECK VS QUIZ)
+        // VIEW SWITCHER ENGINE
         // =========================================================================
         function switchView(view) {
             state.currentView = view;
             const deckView = document.getElementById('deck-view');
+            const cardCheckView = document.getElementById('card-check-view');
             const quizView = document.getElementById('quiz-view');
             const deckBtn = document.getElementById('view-deck-btn');
+            const cardCheckBtn = document.getElementById('view-card-check-btn');
             const quizBtn = document.getElementById('view-quiz-btn');
+            const activeClass = "px-3 py-1.5 rounded-md font-medium flex items-center space-x-2 transition-all bg-cockpit-accent text-slate-950 shadow-sm";
+            const inactiveClass = "px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-slate-200 flex items-center space-x-2 transition-all";
 
-            if (view === 'deck') {
-                deckView.classList.remove('hidden');
-                quizView.classList.add('hidden');
-                deckBtn.className = "px-3 py-1.5 rounded-md font-medium flex items-center space-x-2 transition-all bg-cockpit-accent text-slate-950 shadow-sm";
-                quizBtn.className = "px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-slate-200 flex items-center space-x-2 transition-all";
-            } else {
-                deckView.classList.add('hidden');
-                quizView.classList.remove('hidden');
-                quizBtn.className = "px-3 py-1.5 rounded-md font-medium flex items-center space-x-2 transition-all bg-cockpit-accent text-slate-950 shadow-sm";
-                deckBtn.className = "px-3 py-1.5 rounded-md font-medium text-slate-400 hover:text-slate-200 flex items-center space-x-2 transition-all";
+            deckView.classList.toggle('hidden', view !== 'deck');
+            cardCheckView.classList.toggle('hidden', view !== 'card-check');
+            quizView.classList.toggle('hidden', view !== 'quiz');
+            deckBtn.className = view === 'deck' ? activeClass : inactiveClass;
+            cardCheckBtn.className = view === 'card-check' ? activeClass : inactiveClass;
+            quizBtn.className = view === 'quiz' ? activeClass : inactiveClass;
+
+            if (view === 'card-check' && !state.cardCheck.currentCard) {
+                startCardCheck();
+            } else if (view === 'quiz') {
                 startQuizSession(false);
             }
+        }
+
+        function startCardCheck() {
+            const previousId = state.cardCheck.lastCardId;
+            const candidates = symbolsData.filter(card => String(card.id) !== String(previousId));
+            const card = candidates[Math.floor(Math.random() * candidates.length)] || symbolsData[0];
+            const distractors = symbolsData.filter(item =>
+                String(item.id) !== String(card.id) && item.name !== card.name
+            );
+            const wrongOption = distractors[Math.floor(Math.random() * distractors.length)];
+            const options = shuffleItems([card, wrongOption]);
+
+            state.cardCheck.round++;
+            state.cardCheck.currentCard = card;
+            state.cardCheck.lastCardId = card.id;
+            state.cardCheck.options = options;
+            state.cardCheck.answered = false;
+
+            document.getElementById('card-check-progress').innerText =
+                `Symbol ${state.cardCheck.round} · Choose 1 of 2 definitions · 1 mark`;
+            document.getElementById('card-check-svg').innerHTML = card.svg;
+            document.getElementById('card-check-options').innerHTML = options.map((option, index) => `
+                <button data-answer-id="${escapeQuizText(option.id)}" onclick="handleCardCheckAnswer(this)" class="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 rounded-xl text-left text-sm text-slate-200 font-medium transition-all flex items-center gap-3">
+                    <span class="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-mono text-cyan-400">${String.fromCharCode(65 + index)}</span>
+                    <span class="flex-1">${escapeQuizText(option.name)}</span>
+                </button>
+            `).join('');
+            document.getElementById('card-check-score').innerText =
+                `${state.cardCheck.score} / ${state.cardCheck.total}`;
+            document.getElementById('card-check-feedback').classList.add('hidden');
+            document.getElementById('card-check-next').classList.add('hidden');
+        }
+
+        function handleCardCheckAnswer(button) {
+            const cardCheck = state.cardCheck;
+            if (cardCheck.answered || !cardCheck.currentCard) return;
+
+            cardCheck.answered = true;
+            cardCheck.total++;
+            const correct = button.dataset.answerId === String(cardCheck.currentCard.id);
+            if (correct) cardCheck.score++;
+
+            document.querySelectorAll('#card-check-options button').forEach(option => {
+                option.disabled = true;
+                if (option.dataset.answerId === String(cardCheck.currentCard.id)) {
+                    option.classList.add('border-emerald-500', 'bg-emerald-950/60', 'text-emerald-300');
+                }
+            });
+            if (!correct) button.classList.add('border-red-500', 'bg-red-950/60', 'text-red-300');
+
+            const feedback = document.getElementById('card-check-feedback');
+            feedback.className = correct
+                ? 'w-full p-4 rounded-xl font-medium text-sm text-center bg-emerald-950/80 border border-emerald-500/50 text-emerald-300'
+                : 'w-full p-4 rounded-xl font-medium text-sm text-center bg-red-950/80 border border-red-500/50 text-red-300';
+            feedback.innerHTML = correct
+                ? `<strong>Correct — 1 mark.</strong> ${escapeQuizText(cardCheck.currentCard.name)}`
+                : `Not quite — 0 marks. Correct definition: <strong>${escapeQuizText(cardCheck.currentCard.name)}</strong>`;
+            feedback.classList.remove('hidden');
+            document.getElementById('card-check-score').innerText =
+                `${cardCheck.score} / ${cardCheck.total}`;
+            document.getElementById('card-check-next').classList.remove('hidden');
+        }
+
+        function nextCardCheck() {
+            if (state.cardCheck.answered) startCardCheck();
+        }
+
+        function shuffleCardCheck() {
+            startCardCheck();
         }
 
         // =========================================================================

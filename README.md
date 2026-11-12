@@ -8,6 +8,8 @@ ICAO Annex 14, Volume I is listed as the 9th Edition (July 2022), including Amen
 
 Colors on the Annex 4 cards follow the applicable Appendix 2 plate, including exceptions such as black spot-elevation text and yellow caution panels. The new aerodrome/heliport chart symbols are monochrome black as shown on the accessible Appendix 2 plate. Annex 14 cards use the prescribed color conventions for runway/taxiway markings, signs, and lighting. All SVGs are simplified study artwork, not dimensional or approved diagrams; refer to the current ICAO publication, national AIP, and applicable chart legend before operational use.
 
+The Quick Card Check presents one symbol with two possible definitions, gives immediate feedback, and awards one mark for a correct answer before the user moves to the quiz. It can shuffle to another symbol while keeping a running score.
+
 The quiz supports identification and multi-pair matching. Easy quizzes use one aerodrome group, Medium mixes two, and Hard uses all three; each mode offers configurable lengths and Versions A–C. Questions and choices are shuffled, and each correct answer or pair earns one mark.
 
 Sources:
