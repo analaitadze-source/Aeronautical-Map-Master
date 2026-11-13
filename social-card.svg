@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="627" viewBox="0 0 1200 627" role="img" aria-labelledby="title description">
   <title id="title">Aeronautical Map Master — aviation cartography study deck</title>
-  <desc id="description">A LinkedIn share-card illustration combining a topographic map, civil and military flight paths, aerodrome markings, and Annex 4-derived chart symbols. Study aid only.</desc>
+  <desc id="description">A LinkedIn share-card illustration combining a flight-map overlay, topographic relief, civil and military routes, aerodrome markings, and Annex 4-derived chart symbols. Study aid only.</desc>
   <defs>
     <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#081421"/>
@@ -116,8 +116,40 @@
 
     <path d="M1138 74c-45 39-62 58-95 72s-53 39-75 64-54 28-84 47-42 50-77 66-60 41-77 75-51 49-77 93" fill="none" stroke="#70b7c1" stroke-width="13" stroke-opacity=".28"/>
     <path d="M1138 74c-45 39-62 58-95 72s-53 39-75 64-54 28-84 47-42 50-77 66-60 41-77 75-51 49-77 93" fill="none" stroke="#8ccbd0" stroke-width="3"/>
+    <path d="M579 178c68-39 119-44 168-21s84 39 134 16 84-35 132-16 74 34 125 15" fill="none" stroke="#56e1db" stroke-width="3.5"/>
+    <path d="m1128 172 10-1-6-8" fill="none" stroke="#56e1db" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <ellipse cx="923" cy="220" rx="96" ry="73" fill="#63d9d4" fill-opacity=".035" stroke="#bce9dc" stroke-opacity=".58" stroke-width="1.5" stroke-dasharray="5 6"/>
     <path d="M578 239c81-5 137 16 184 45s82 27 123 1 80-46 121-32 71 43 118 36" fill="none" stroke="#d69854" stroke-width="2.5" stroke-dasharray="8 7"/>
     <path d="M578 239c81-5 137 16 184 45s82 27 123 1 80-46 121-32 71 43 118 36" fill="none" stroke="#d69854" stroke-width="9" stroke-opacity=".12"/>
+
+    <g fill="#16353b" stroke="#d8fbef" stroke-width="2">
+      <circle cx="640" cy="153" r="5"/>
+      <circle cx="744" cy="154" r="5"/>
+      <circle cx="881" cy="168" r="5"/>
+      <circle cx="1013" cy="164" r="5"/>
+      <circle cx="686" cy="245" r="4.5"/>
+      <circle cx="824" cy="280" r="4.5"/>
+      <circle cx="947" cy="266" r="4.5"/>
+      <circle cx="1067" cy="270" r="4.5"/>
+    </g>
+    <g fill="#f3f0d7" font-family="Arial, Helvetica, sans-serif" font-size="7" font-weight="700" letter-spacing=".7">
+      <text x="624" y="144">FIX A</text>
+      <text x="730" y="143">FIX B</text>
+      <text x="867" y="156">FIX C</text>
+      <text x="999" y="151">FIX D</text>
+      <text x="665" y="261">FIX E</text>
+      <text x="807" y="297">FIX F</text>
+      <text x="930" y="283">FIX G</text>
+      <text x="1050" y="288">FIX H</text>
+    </g>
+    <g transform="translate(840 106)">
+      <rect width="145" height="22" rx="11" fill="#10383a" fill-opacity=".94" stroke="#56e1db" stroke-opacity=".65"/>
+      <text x="72.5" y="15" text-anchor="middle" fill="#d9fbef" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="700" letter-spacing=".6">CIVIL A1 · FL180</text>
+    </g>
+    <g transform="translate(874 294)">
+      <rect width="145" height="22" rx="11" fill="#463525" fill-opacity=".95" stroke="#d69854" stroke-opacity=".75"/>
+      <text x="72.5" y="15" text-anchor="middle" fill="#ffe2b3" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="700" letter-spacing=".6">MIL M2 · FL240</text>
+    </g>
 
     <g transform="translate(944 189) rotate(35)" fill="#f4f3e8" stroke="#172c35" stroke-width="1.3">
       <path d="M0-29 4-7 25 6 24 11 5 6 5 22 12 30 12 34 0 30-12 34-12 30-5 22-5 6-24 11-25 6-4-7Z"/>
@@ -128,15 +160,35 @@
 
     <g transform="translate(584 58)">
       <rect width="244" height="25" rx="12.5" fill="#162927" fill-opacity=".85" stroke="#d6d1a2" stroke-opacity=".7"/>
-      <text x="122" y="17" text-anchor="middle" fill="#f0ebce" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="700" letter-spacing="1.2">TOPOGRAPHIC CHART · ILLUSTRATIVE</text>
+      <text x="122" y="17" text-anchor="middle" fill="#f0ebce" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="700" letter-spacing="1.2">FLIGHT MAP · TERRAIN LAYER · SCHEMATIC</text>
     </g>
-    <g transform="translate(1095 90)">
-      <path d="M0 19 8 0l8 19-8-4z" fill="#f5f0d7"/>
-      <text x="8" y="32" fill="#f5f0d7" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="700">N</text>
+    <g transform="translate(1098 108)">
+      <circle r="20" fill="#162927" fill-opacity=".92" stroke="#d6d1a2" stroke-opacity=".8"/>
+      <path d="M0-15 4 0 0 3-4 0Z" fill="#f5f0d7"/>
+      <path d="M0 15 4 0 0-3-4 0Z" fill="#d69854"/>
+      <path d="M-15 0 0 4 3 0 0-4Z" fill="#e5e0c3" opacity=".8"/>
+      <path d="M15 0 0 4-3 0 0-4Z" fill="#e5e0c3" opacity=".8"/>
+      <text x="0" y="-24" fill="#f5f0d7" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="7" font-weight="700">N</text>
+      <text x="25" y="3" fill="#f5f0d7" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="6">E</text>
+      <text x="0" y="29" fill="#f5f0d7" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="6">S</text>
+      <text x="-25" y="3" fill="#f5f0d7" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="6">W</text>
+    </g>
+    <g transform="translate(1081 326)">
+      <rect x="-42" y="-40" width="84" height="82" rx="12" fill="#102c31" fill-opacity=".96" stroke="#77bcae" stroke-opacity=".8"/>
+      <circle cy="-4" r="26" fill="#0b2028" stroke="#85cbb5" stroke-opacity=".6"/>
+      <circle cy="-4" r="18" fill="none" stroke="#85cbb5" stroke-opacity=".35"/>
+      <circle cy="-4" r="9" fill="none" stroke="#85cbb5" stroke-opacity=".35"/>
+      <path d="M0-4 23-16A26 26 0 0 1 24 7Z" fill="#55d5aa" fill-opacity=".28"/>
+      <path d="M0-4 23-16" stroke="#a9f4d4" stroke-width="1.5"/>
+      <path d="M-26-4h52M0-30v52" stroke="#85cbb5" stroke-opacity=".2"/>
+      <circle cx="11" cy="-15" r="2" fill="#f3c778"/>
+      <circle cx="-13" cy="5" r="1.7" fill="#f3c778"/>
+      <text x="0" y="34" fill="#d5f2e7" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="7" font-weight="700" letter-spacing="1">RADAR</text>
     </g>
     <text x="628" y="160" fill="#f0ebce" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="700" letter-spacing="1">RIDGE</text>
     <text x="1026" y="146" fill="#f0ebce" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="700" letter-spacing="1">RIVER VALLEY</text>
-    <text x="604" y="360" fill="#f0ebce" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="700" letter-spacing="1">CIVIL ROUTE</text>
+    <text x="945" y="224" fill="#e2f6ec" font-family="Arial, Helvetica, sans-serif" font-size="7" font-weight="700" letter-spacing=".8">AIRSPACE</text>
+    <text x="604" y="360" fill="#b9f4e8" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="700" letter-spacing="1">CIVIL ROUTE</text>
     <text x="984" y="249" fill="#f7d59b" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="700" letter-spacing="1">MILITARY ROUTE</text>
   </g>
 
