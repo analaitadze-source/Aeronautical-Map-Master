@@ -10,6 +10,8 @@ Each card includes a per-symbol audit note and source/version details. The 125 A
 
 The supplied Doc 4444 and Doc 9432 materials concern air traffic management and radiotelephony, not chart-symbol legends. The CAA radio manual and quick-reference phraseology sheet require confirmation of their issuing authority, jurisdiction, and current edition; the EVAIR 2015–19 bulletin is historical safety material. PDFCoffee search listings included provider-specific Jeppesen, Navtech, and Navblue legends and an uploaded Doc 10066 copy. Those listings do not establish an official, current, or universally applicable source and were not used to validate this app. ICAO identifies State AIPs, together with their amendments and supplements, as the primary source for aeronautical information; use the current State AIP, chart-specific legend, applicable regulations, and approved operational manuals instead.
 
+Research context: Google Scholar's search pages returned a robot-verification challenge during this review. Publication metadata and abstracts were cross-checked through OpenAlex and the linked DOI or repository records. A 2026 systematic review of 36 flight-deck spatial-visualization papers reports that most user studies were conducted in labs or simulators, with only a handful in real-world environments; it also discusses cognitive load and attentional tunneling. A 2007 instrument-rated-pilot study found most proposed electronic-chart symbols were recognized, but a few were problematic. A 2019 study surveyed 229 rated pilots about electronic-chart information needs, while a 2008 industry survey documents variation among avionics manufacturers and chart providers. These papers provide human-factors context, not validation of this app or authority for operational use.
+
 The Quick Card Check presents one symbol with two possible definitions, gives immediate feedback, and awards one mark for a correct answer before the user moves to the quiz. It can shuffle to another symbol while keeping a running score.
 
 The quiz supports identification and multi-pair matching. Easy quizzes use one aerodrome group, Medium mixes two, and Hard uses all three; each mode offers configurable lengths and Versions A–C. Questions and choices are shuffled, and each correct answer or pair earns one mark.
@@ -29,3 +31,7 @@ Sources:
 - [ICAO Aeronautical Information Management](https://www.icao.int/airnavigation/aeronautical-information-management)
 - [ICAO Doc 4444 — PANS Air Traffic Management](https://store.icao.int/en/procedures-for-air-navigation-services-air-traffic-management-doc-4444)
 - [ICAO Doc 9432 — Manual of Radiotelephony](https://store.icao.int/en/manual-of-radiotelephony-doc-9432)
+- [Spatial information visualization on the flight deck: a systematic literature review (2026)](https://doi.org/10.1080/23729333.2025.2603069)
+- [Pilot Identification of Proposed Electronic Symbols for Displays of Aeronautical Charting Information (2007)](https://doi.org/10.1177/154193120705100203)
+- [Pilot Information Needs for Electronic Data-Driven Charts (2019)](https://corescholar.libraries.wright.edu/isap_2019/51)
+- [Survey of Symbology for Aeronautical Charts and Electronic Displays (2008)](https://openalex.org/W2887772208)
