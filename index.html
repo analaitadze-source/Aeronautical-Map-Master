@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aeronautical Map Master</title>
+    <meta name="description" content="Study aeronautical chart symbols with sourced flashcards, a two-choice check, and shuffled quizzes. Study aid only—not for operational use.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://analaitadze-source.github.io/Aeronautical-Map-Master/">
+    <meta property="og:title" content="Aeronautical Map Master">
+    <meta property="og:description" content="Explore, practice, and review aeronautical chart symbols. A sourced study aid—not an operational chart reference.">
+    <meta property="og:image" content="https://analaitadze-source.github.io/Aeronautical-Map-Master/social-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+    <meta property="og:image:alt" content="Aeronautical Map Master study deck, illustrated with a glowing runway and navigation route on a dark chart grid.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Aeronautical Map Master">
+    <meta name="twitter:description" content="A sourced aeronautical chart-symbol study aid—not for operational use.">
+    <meta name="twitter:image" content="https://analaitadze-source.github.io/Aeronautical-Map-Master/social-card.png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -163,6 +176,28 @@
 
     <!-- MAIN APP CONTAINER -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 flex flex-col gap-6">
+
+        <section class="glass-panel rounded-xl border border-cyan-900/70 bg-slate-950/70 p-4 md:p-5" aria-labelledby="research-note-title">
+            <div class="flex items-start gap-3">
+                <div class="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-cyan-800/70 bg-cyan-950/60 text-cyan-300">
+                    <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                </div>
+                <div class="min-w-0">
+                    <p class="text-[10px] font-mono uppercase tracking-[0.2em] text-cyan-400">Research context</p>
+                    <h2 id="research-note-title" class="mt-1 text-sm font-bold text-slate-100">Research supports study design, not operational approval</h2>
+                    <p class="mt-1 max-w-4xl text-xs leading-relaxed text-slate-400">
+                        A 2026 review found most flight-deck chart-visualization studies used labs or simulators, with few real-world evaluations. A 2007 pilot study found a few proposed symbols were problematic; a 2019 survey studied chart-information needs, and a 2008 survey documented provider differences. None validates this deck for operations.
+                    </p>
+                    <nav class="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs" aria-label="Research references">
+                        <a class="text-cyan-300 underline decoration-cyan-800 underline-offset-2 hover:text-cyan-100" href="https://doi.org/10.1080/23729333.2025.2603069" target="_blank" rel="noopener noreferrer">2026 literature review</a>
+                        <a class="text-cyan-300 underline decoration-cyan-800 underline-offset-2 hover:text-cyan-100" href="https://doi.org/10.1177/154193120705100203" target="_blank" rel="noopener noreferrer">2007 pilot symbol study</a>
+                        <a class="text-cyan-300 underline decoration-cyan-800 underline-offset-2 hover:text-cyan-100" href="https://corescholar.libraries.wright.edu/isap_2019/51" target="_blank" rel="noopener noreferrer">2019 pilot chart-needs study</a>
+                        <a class="text-cyan-300 underline decoration-cyan-800 underline-offset-2 hover:text-cyan-100" href="https://openalex.org/W2887772208" target="_blank" rel="noopener noreferrer">2008 symbology survey record</a>
+                    </nav>
+                    <p class="mt-2 text-[10px] text-slate-500">Google Scholar search was blocked by a verification challenge; publication records were cross-checked using DOI and repository sources.</p>
+                </div>
+            </div>
+        </section>
 
         <!-- DECK VIEW CONTAINER -->
         <div id="deck-view" class="flex flex-col gap-6">
