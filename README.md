@@ -40,5 +40,6 @@ Sources:
 - [ICAO Doc 9432 — Manual of Radiotelephony](https://store.icao.int/en/manual-of-radiotelephony-doc-9432)
 - [Spatial information visualization on the flight deck: a systematic literature review (2026)](https://doi.org/10.1080/23729333.2025.2603069)
 - [Pilot Identification of Proposed Electronic Symbols for Displays of Aeronautical Charting Information (2007)](https://doi.org/10.1177/154193120705100203)
+- [Pilot identification of symbols … for electronic displays of aeronautical charting information — FAA/Volpe report DOT/FAA/AR-07/37 (2007)](https://rosap.ntl.bts.gov/view/dot/8912)
 - [Pilot Information Needs for Electronic Data-Driven Charts (2019)](https://corescholar.libraries.wright.edu/isap_2019/51)
 - [Survey of Symbology for Aeronautical Charts and Electronic Displays (2008)](https://openalex.org/W2887772208)
