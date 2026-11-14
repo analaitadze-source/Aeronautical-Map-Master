@@ -8,39 +8,27 @@
     const categoryDetails = {
         topography: {
             label: "Topography",
-            color: "#a86616",
-            plate: 149,
-            chapter: "16.7.7–16.7.12"
+            color: "#a86616"
         },
         hydrography: {
             label: "Hydrography",
-            color: "#1769aa",
-            plate: 149,
-            chapter: "16.7.6"
+            color: "#1769aa"
         },
         culture: {
             label: "Culture & Infrastructure",
-            color: "#20242b",
-            plate: 150,
-            chapter: "16.7.1–16.7.3"
+            color: "#20242b"
         },
         aerodrome: {
             label: "Aerodromes",
-            color: "#3d3a9d",
-            plate: 150,
-            chapter: "11.10.1 and 16.9.2"
+            color: "#3d3a9d"
         },
         navaid: {
             label: "Radio Navigation Aids",
-            color: "#50459b",
-            plate: 151,
-            chapter: "16.9.6 and 17.9.6"
+            color: "#50459b"
         },
         airspace: {
             label: "Air Traffic Services",
-            color: "#50459b",
-            plate: 152,
-            chapter: "2.14.1, 16.9.5 and 17.9.5"
+            color: "#50459b"
         }
     };
 
@@ -380,13 +368,13 @@
     function makeCard([id, name, category]) {
         const categoryInfo = categoryDetails[category];
         const symbolColor = symbolColors[id] || categoryInfo.color;
-        const sourcePage = `${annex4Url}#page=${categoryInfo.plate}`;
+        const sourcePage = annex4Url;
         const references = [
             {
                 document: "ICAO Annex 4 — Appendix 2 symbol plate",
                 url: sourcePage,
                 version: "11th Edition (July 2009); the FOCA copy's amendment record indicates Amendment 62, but its file label marks the consolidation in progress",
-                citation: `Symbol ${id}: ${name}; Annex 4 ${categoryInfo.chapter}`,
+                citation: `Annex 4, Appendix 2 (ICAO Chart Symbols), symbol ${id}: ${name}`,
                 comment: `Visual check: ${visualAudit[id]} Independent vector redraw based on the cited Appendix 2 symbol ${id} (“${name}”); not official source artwork.`
             },
             {
@@ -422,7 +410,7 @@
             convention: `${categoryInfo.label}; colors and details can vary with chart type and applicable legend.`,
             sop: `Study note: ${chapterNote[category]}`,
             references,
-            complianceComment: `Visual check: ${visualAudit[id]} Source: ICAO Annex 4 Appendix 2 symbol ${id} (“${name}”), Annex 4 ${categoryInfo.chapter}, PDF page ${categoryInfo.plate}, accessible 11th Edition (July 2009) copy. The copy is marked as an in-progress consolidation and its amendment record indicates Amendment 62; Amendment 63 and the full Doc 8697 text were not checked. This visual audit does not establish current-edition regulatory compliance; not for operational chart use.`
+            complianceComment: `Visual check: ${visualAudit[id]} Source: ICAO Annex 4 Appendix 2 symbol ${id} (“${name}”) in “ICAO Chart Symbols”, accessible 11th Edition (July 2009) copy. The copy is marked as an in-progress consolidation and its amendment record indicates Amendment 62; Amendment 63 and the full Doc 8697 text were not checked. This visual audit does not establish current-edition regulatory compliance; not for operational chart use.`
         };
     }
 
